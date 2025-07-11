@@ -14,7 +14,7 @@
 
 extern char	**environ; // 시스템에서 이미 전역으로 제공하는 환경변수 배열 포인터
 
-static int fork_and_execute(char *exec_path, char **argv, char **envp)
+int	fork_and_execute(char *exec_path, char **argv, char **envp, t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
@@ -27,6 +27,8 @@ static int fork_and_execute(char *exec_path, char **argv, char **envp)
 	}
 	if (pid == 0)
 	{
+		if (handle_redirects(cmd))
+			exit(EXIT_FAILURE);
 		if (execve(exec_path, argv, envp) == -1)
 		{
 			perror("execve");
@@ -38,20 +40,58 @@ static int fork_and_execute(char *exec_path, char **argv, char **envp)
 	return (0);
 }
 
-void execute_cmds(t_cmd *cmd)
-{
-	char *exec_path;
 
-	if (!cmd || !cmd->argv || !cmd->argv[0])
-		return ;
-	exec_path = find_executable(cmd->argv[0], environ);
-	if (!exec_path)
+static int	count_commands(t_cmd *cmd)
+{
+	int	count;
+
+	count = 0;
+	while (cmd)
 	{
-		write(2, "minishell: command not found: ", 30);
-		write(2, cmd->argv[0], ft_strlen(cmd->argv[0]));
-		write(2, "\n", 1);
-		return ;
+		count++;
+		cmd = cmd->next;
 	}
-	fork_and_execute(exec_path, cmd->argv, environ);
-	free(exec_path);
+	return (count);
+}
+
+static void	wait_all_children(int count)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < count)
+	{
+		wait(&status);
+		i++;
+	}
+}
+
+void	execute_cmds(t_cmd *cmd)
+{
+	int		count;
+	int		**pipefd;
+	pid_t	pid;
+	int		idx;
+	t_cmd	*curr;
+
+	count = count_commands(cmd);
+	pipefd = create_pipes(count - 1);
+	if (!pipefd)
+		return ;
+	idx = 0;
+	curr = cmd;
+	while (curr)
+	{
+		pid = fork();
+		if (pid == -1)
+			perror("fork");
+		else if (pid == 0)
+			child_process(curr, idx, count, pipefd);
+		curr = curr->next;
+		idx++;
+	}
+	close_pipes(pipefd, count - 1);
+	wait_all_children(count);
+	free_pipes(pipefd, count - 1);
 }

@@ -26,3 +26,19 @@ void	free_argv(char **argv)
 	}
 	free(argv);
 }
+
+void free_pipes(int **pipefd, int count)
+{
+    int i;
+
+    if (!pipefd)
+        return ;
+    i = 0;
+    while (i < count)
+    {
+        if (pipefd[i])
+            free(pipefd[i]);
+        i++;
+    }
+    free(pipefd);
+}
