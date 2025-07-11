@@ -43,6 +43,7 @@ typedef struct s_cmd {
 void    execute_cmds(t_cmd *cmd);
 char    *find_executable(char *cmd_name, char **envp);
 char    *ft_strjoin_three(const char *s1, const char *s2, const char *s3);
+int		handle_redirects(t_cmd *cmd);
 void    free_argv(char **argv);
 
 #endif
