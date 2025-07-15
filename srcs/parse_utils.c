@@ -6,7 +6,7 @@
 /*   By: gimtaewon <gimtaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:54:14 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/11 13:16:26 by gimtaewon        ###   ########.fr       */
+/*   Updated: 2025/07/15 10:35:50 by gimtaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,28 @@ int	ft_isoper(char c)
 		return (1);
 	else
 		return (0);
+}
+
+char	handle_escape(char c)
+{
+if (c == 'n')
+		return ('\n');
+	else if (c == 't')
+		return ('\t');
+	else if (c == 'r')
+		return ('\r');
+	else if (c == 'v')
+		return ('\v');
+	else if (c == 'f')
+		return ('\f');
+	else if (c == '\"')
+		return ('\"');
+	else if (c == ' ')
+		return (' ');
+	else if (c == '\\')
+		return ('\\');
+	else if (c == '\'')
+		return ('\'');
+	else
+		return (c);
 }

@@ -6,7 +6,7 @@
 /*   By: gimtaewon <gimtaewon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 13:44:33 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/11 01:50:44 by gimtaewon        ###   ########.fr       */
+/*   Updated: 2025/07/15 10:46:14 by gimtaewon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ typedef struct s_cmd {
 
 typedef enum e_state {
     s_in_general,
-    // 일반적인 상태
+    // 일반적인 상태, 따옴표, 특수 연산자 바깥에 있는 상태
     s_in_double_quote,
-    // 더블 쿼트 안에 있는 상태
+    // 더블 쿼트 안에 있는 상태, / $ 등의 문자는 처리되어야 한다.
     s_in_operation,
-    // 연산자 안에 있는 상태
+    // 연산자 안에 있는 상태, 다음 연산자를 만나면 리턴해야한다.
     s_in_single_quote,
-    // 싱글 쿼트 안에 있는 상태
+    // 싱글 쿼트 안에 있는 상태, 내부의 모든 문자는 리터럴로 처리되어야 한다.
     s_in_word
     // 단어 안에 있는 상태
 } t_state;
@@ -78,7 +78,6 @@ typedef struct s_node {
 } t_node;
 
 // lexing.c
-void    lexing(const char *cmd);
 
 void    execute_cmds(t_cmd *cmd);
 char    *find_executable(char *cmd_name, char **envp);
