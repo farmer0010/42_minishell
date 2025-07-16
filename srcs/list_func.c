@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   list_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimtaewon <gimtaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 00:56:05 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/07/11 00:56:39 by gimtaewon        ###   ########.fr       */
+/*   Updated: 2025/07/16 10:57:56 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_node	*create_node(int type, char *value);
+void	append_token(t_node **head, t_node *node);
 
 t_node	*create_node(int type, char *value)
 {
@@ -20,7 +23,7 @@ t_node	*create_node(int type, char *value)
 	token = malloc(sizeof(t_token));
 	if (!token)
 	{
-		perror("fail malloc() token\n");
+		perror("list_func.c/fail malloc() token\n");
 		return (NULL);
 	}
 	token->type = type;
@@ -28,7 +31,7 @@ t_node	*create_node(int type, char *value)
 	node = malloc(sizeof(t_node));
 	if (!node)
 	{
-		perror("fail malloc() new_node\n");
+		perror("list_func.c/fail malloc() new_node\n");
 		return (NULL);
 	}
 	node->token = token;
@@ -37,20 +40,24 @@ t_node	*create_node(int type, char *value)
 	return (node);
 }
 
-void	append_node(t_node **head, t_node *new_node)
+void	append_token(t_node **head, t_node *node)
 {
-	t_node	*current;
-
-	if (!head || !new_node)
-		return ;
-	if (*head == NULL)
+	if (!node || !head)
 	{
-		*head = new_node;
+		printf("list_func.c/append_token error\n");
 		return ;
 	}
-	current = *head;
-	while (current->next != NULL)
-		current = current->next;
-	current->next = new_node;
-	new_node->prev = current;
+	if (!*head)
+	{
+		head = node;
+	}
+	else
+	{
+		while (head->next)
+		{
+			head = head->next;
+		}
+		head->next = node;
+		node->prev = head;
+	}
 }

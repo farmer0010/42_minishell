@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimtaewon <gimtaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 13:44:33 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/15 10:46:14 by gimtaewon        ###   ########.fr       */
+/*   Updated: 2025/07/16 12:42:42 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ typedef enum e_state {
     // 일반적인 상태, 따옴표, 특수 연산자 바깥에 있는 상태
     s_in_double_quote,
     // 더블 쿼트 안에 있는 상태, / $ 등의 문자는 처리되어야 한다.
-    s_in_operation,
-    // 연산자 안에 있는 상태, 다음 연산자를 만나면 리턴해야한다.
     s_in_single_quote,
     // 싱글 쿼트 안에 있는 상태, 내부의 모든 문자는 리터럴로 처리되어야 한다.
     s_in_word
@@ -79,10 +77,22 @@ typedef struct s_node {
 
 // lexing.c
 
+
 void    execute_cmds(t_cmd *cmd);
 char    *find_executable(char *cmd_name, char **envp);
 char    *ft_strjoin_three(const char *s1, const char *s2, const char *s3);
 int		handle_redirects(t_cmd *cmd);
 void    free_argv(char **argv);
+
+// parse_utils.c
+int		ft_isquote(char c);
+int		ft_isspace(char c);
+char	handle_escape(char c);
+int		ft_isoper(char c);
+int		ft_isspace(char c);
+
+// list_func.c
+t_node	*create_node(int type, char *value);
+void	append_token(t_node **head, t_node *node);
 
 #endif

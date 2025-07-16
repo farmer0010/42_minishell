@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimtaewon <gimtaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:25:45 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/11 13:15:18 by gimtaewon        ###   ########.fr       */
+/*   Updated: 2025/07/16 13:13:09 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(int ac, char **av, char **envp)
 {
 	char	*cmd;
+	static t_node	*head;
 
 	while (1)
 	{
@@ -34,6 +35,7 @@ int	main(int ac, char **av, char **envp)
 		}
 		add_history(cmd); // readline()으로 입력받은 값을 히스토리에 추가
 		// cmd 문자열 파싱 + 실행 로직 구성
+
 		// 여기서 cmd를 파싱하고 실행하는 로직을 구현.
 		free(cmd);
 		// 작업 다 끝나면 free

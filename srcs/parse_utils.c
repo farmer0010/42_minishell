@@ -3,16 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gimtaewon <gimtaewon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:54:14 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/15 10:35:50 by gimtaewon        ###   ########.fr       */
+/*   Updated: 2025/07/16 10:48:21 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_isspace(char c)
+int		ft_isquote(char c);
+int		ft_isspace(char c);
+char	handle_escape(char c);
+int		ft_isoper(char c);
+
+int		ft_isspace(char c)
 {
 	if (c == ' ' || c > 9 && c < 14)
 		return (1);
@@ -32,8 +37,12 @@ int	ft_isquote(char c)
 
 int	ft_isoper(char c)
 {
-	if (c == '|' || c == '<' || c == '>')
-		return (1);
+	if (c == '|')
+		return (PIPE);
+	else if (c == '<')
+		return (REDIRECT_IN);
+	else if (c == '>')
+		return (REDIRECT_OUT);
 	else
 		return (0);
 }
