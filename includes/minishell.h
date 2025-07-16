@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 13:44:33 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/16 12:42:42 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:01:34 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../Libft/libft.h"
+# include "libft.h"
 
 # ifndef TRUE
 #  define TRUE 1
