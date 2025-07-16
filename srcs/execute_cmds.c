@@ -40,7 +40,6 @@ int	fork_and_execute(char *exec_path, char **argv, char **envp, t_cmd *cmd)
 	return (0);
 }
 
-
 static int	count_commands(t_cmd *cmd)
 {
 	int	count;

@@ -19,7 +19,7 @@ static char	*get_path_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		if (!ft_strncmp(envp[i], "PATH=", 5))
 			return (envp[i] + 5);
 		i++;
 	}
@@ -29,13 +29,11 @@ static char	*get_path_env(char **envp)
 static char	**get_paths(char **envp)
 {
 	char	*path_env;
-	char	**paths;
 
 	path_env = get_path_env(envp);
 	if (!path_env)
 		return (NULL);
-	paths = ft_split(path_env, ':');
-	return (paths);
+	return (ft_split(path_env, ':'));
 }
 
 static char	*search_path(char **paths, char *cmd_name)
@@ -44,7 +42,6 @@ static char	*search_path(char **paths, char *cmd_name)
 	char	*full_path;
 
 	i = 0;
-	full_path = NULL;
 	while (paths && paths[i])
 	{
 		full_path = ft_strjoin_three(paths[i], "/", cmd_name);

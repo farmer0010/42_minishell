@@ -42,7 +42,23 @@ int	handle_redirect_out(t_cmd *cmd)
 
 int	handle_redirects(t_cmd *cmd)
 {
-	if (handle_redirect_in(cmd) || handle_redirect_out(cmd))
-		return (1);
+	if (cmd->infile != -1)
+	{
+		if (dup2(cmd->infile, STDIN_FILENO) == -1)
+		{
+			perror("dup2 (infile)");
+			return (1);
+		}
+		close(cmd->infile);
+	}
+	if (cmd->outfile != -1)
+	{
+		if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
+		{
+			perror("dup2 (outfile)");
+			return (1);
+		}
+		close(cmd->outfile);
+	}
 	return (0);
 }
