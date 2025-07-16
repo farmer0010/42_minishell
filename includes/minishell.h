@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../Libft/libft.h"
@@ -84,6 +85,7 @@ void    execute_cmds(t_cmd *cmd);
 char    *find_executable(char *cmd_name, char **envp);
 char    *ft_strjoin_three(const char *s1, const char *s2, const char *s3);
 int		handle_redirects(t_cmd *cmd);
+int		ft_strcmp(const char *s1, const char *s2);
 void    free_argv(char **argv);
 
 #endif
