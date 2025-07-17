@@ -70,26 +70,17 @@ void	execute_cmds(t_cmd *cmd)
 {
 	int		count;
 	int		**pipefd;
-	pid_t	pid;
-	int		idx;
-	t_cmd	*curr;
 
+	if (is_single_builtin(cmd))
+	{
+		exec_builtin(cmd);
+		return ;
+	}
 	count = count_commands(cmd);
 	pipefd = create_pipes(count - 1);
 	if (!pipefd)
 		return ;
-	idx = 0;
-	curr = cmd;
-	while (curr)
-	{
-		pid = fork();
-		if (pid == -1)
-			perror("fork");
-		else if (pid == 0)
-			child_process(curr, idx, count, pipefd);
-		curr = curr->next;
-		idx++;
-	}
+	run_child_processes(cmd, count, pipefd);
 	close_pipes(pipefd, count - 1);
 	wait_all_children(count);
 	free_pipes(pipefd, count - 1);

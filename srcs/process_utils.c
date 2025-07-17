@@ -18,6 +18,8 @@ void	child_process(t_cmd *cmd, int idx, int count, int **pipefd)
 {
 	char	*exec_path;
 
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	setup_pipes(idx, count, pipefd);
 	if (handle_redirects(cmd))
 		exit(EXIT_FAILURE);
@@ -33,4 +35,24 @@ void	child_process(t_cmd *cmd, int idx, int count, int **pipefd)
 	perror("execve");
 	free(exec_path);
 	exit(EXIT_FAILURE);
+}
+
+void	run_child_processes(t_cmd *cmd, int count, int **pipefd)
+{
+	pid_t	pid;
+	int		idx;
+	t_cmd	*curr;
+
+	idx = 0;
+	curr = cmd;
+	while (curr)
+	{
+		pid = fork();
+		if (pid == -1)
+			perror("fork");
+		else if (pid == 0)
+			child_process(curr, idx, count, pipefd);
+		curr = curr->next;
+		idx++;
+	}
 }
