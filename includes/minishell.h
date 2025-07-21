@@ -29,25 +29,18 @@
 # ifndef TRUE
 #  define TRUE 1
 # endif
-
 # ifndef FALSE
 #  define FALSE 0
 # endif
 
 extern int	g_exit_status;
 
-/*
-** t_env: 환경 변수의 key-value 쌍
-*/
 typedef struct s_env
 {
 	char	*key;
 	char	*value;
 }	t_env;
 
-/*
-** t_cmd: 파싱된 명령어 정보를 담는 구조체
-*/
 typedef struct s_cmd
 {
 	char			**argv;
@@ -56,9 +49,6 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
-/*
-** t_state: 렉서가 문자열을 토큰화할 때의 상태
-*/
 typedef enum e_state
 {
 	s_in_general,
@@ -67,9 +57,6 @@ typedef enum e_state
 	s_in_word
 }	t_state;
 
-/*
-** t_token_type: 토큰의 종류
-*/
 typedef enum e_token_type
 {
 	WORD,
@@ -81,18 +68,12 @@ typedef enum e_token_type
 	REDIRECT_APPEND
 }	t_token_type;
 
-/*
-** t_token: 렉싱 결과 생성된 개별 토큰
-*/
 typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
 }	t_token;
 
-/*
-** t_node: 토큰 리스트 노드
-*/
 typedef struct s_node
 {
 	t_token			*token;
@@ -100,9 +81,6 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
-/*
-** t_pipe_data: 파이프 실행 관련 데이터
-*/
 typedef struct s_pipe_data
 {
 	int		idx;
@@ -110,21 +88,22 @@ typedef struct s_pipe_data
 	int		**pipefd;
 }	t_pipe_data;
 
-/*
-** t_shell_data: 쉘의 전체 상태 정보
-*/
 typedef struct s_shell_data
 {
-	t_list			*env_list;
-	t_cmd			*cmd_list;
-	t_node			*token_list;
-	t_pipe_data		pipe_data;
-	int				stdin_backup;
-	int				stdout_backup;
+	t_list		*env_list;
+	t_cmd		*cmd_list;
+	t_node		*token_list;
+	t_pipe_data	pipe_data;
+	int			stdin_backup;
+	int			stdout_backup;
 }	t_shell_data;
+
+/* loop.c */
+void		start_minishell(t_shell_data *data);
 
 /* execute_cmds.c */
 void		execute_cmds(t_shell_data *data);
+void		handle_multiple_cmds(t_shell_data *data, t_cmd *cmd_list);
 
 /* execute_cmds_utils.c */
 char		*find_executable(char *cmd_name, t_list *env_list);
@@ -136,58 +115,87 @@ int			handle_redirects(t_cmd *cmd);
 /* libft_plus_utils.c */
 int			ft_strcmp(const char *s1, const char *s2);
 int			is_numeric(const char *str);
+long long	ft_atoll(const char *str);
 
 /* free_utils.c */
 void		free_argv(char **argv);
-void		free_all(t_shell_data *data);
 void		free_cmd_list(t_cmd *cmd_list);
 void		free_token_list(t_node *token_list);
 void		free_env_node(void *content);
-
-/* signal_utils.c */
-void		sigint_handler(int signo);
-void		sigquit_handler(int signo);
+void		free_pipes(int **pipefd, int count);
+void		free_env_array(char **env_array);
+void		free_all(t_shell_data *data);
 
 /* signal.c */
 void		init_signal(void);
+void		sigint_handler(int signo);
+void		sigquit_handler(int signo);
 
 /* builtin.c */
 int			is_builtin(char *cmd);
 int			exec_builtin(t_cmd *cmd, t_shell_data *data);
 
-/* builtin_utils.c */
+/* builtin_cd.c */
+int			builtin_cd(char **argv, t_shell_data *data);
+
+/* builtin_echo_pwd.c */
 int			builtin_echo(char **argv);
-int			builtin_cd(char **argv, t_list *env_list);
 int			builtin_pwd(void);
+
+/* builtin_env.c */
 int			builtin_env(t_list *env_list);
+
+/* builtin_exit.c */
 int			builtin_exit(char **argv, t_shell_data *data);
 
-/* builtin_utils2.c (export) */
-int			builtin_export(char **argv, t_list **env_list);
-int			is_valid_identifier(const char *str);
+/* builtin_export.c */
+int			builtin_export(char **argv, t_list *env_list);
+void		handle_export_arg(const char *arg, t_list **env_list);
+void		handle_export_with_value(t_list **env_list,
+				const char *arg, char *equal_sign);
+void		handle_export_no_value(t_list **env_list, const char *arg);
 
-/* builtin_utils3.c (unset) */
+/* builtin_validation.c */
+int			is_valid_identifier(const char *str);
+void		handle_export_key_value(t_list **env_list,
+				char *key, char *value);
+
+/* builtin_handler.c */
+void		handle_single_builtin(t_cmd *cmd, t_shell_data *data);
+
+/* builtin_single.c */
+int			is_single_builtin(t_cmd *cmd);
+
+/* builtin_unset.c */
 int			builtin_unset(char **argv, t_list **env_list);
 
-/* env_manage.c */
+/* env_init.c */
 t_list		*init_env_list(char **envp_sys);
+
+/* env_getters.c */
 char		*get_env_value(t_list *env_list, const char *key);
-int			set_env_value(t_list **env_list, const char *key, const char *value);
+
+/* env_set_unset.c */
+int			set_env_value(t_list **env_list,
+				const char *key, const char *value);
 int			unset_env_value(t_list **env_list, const char *key);
+
+/* env_convert.c */
 char		**convert_env_list_to_array(t_list *env_list);
-void		free_env_array(char **env_array);
+
+/* env_utils.c */
+t_env		*create_env_node_content(const char *key, const char *value);
 
 /* pipe_utils.c */
 int			**create_pipes(int count);
 void		setup_pipes(int idx, int count, int **pipefd);
 void		close_unused_pipes(int **pipefd, int count);
 
-/* process_utils.c */
+/* process_child.c */
 void		child_process(t_cmd *cmd, t_shell_data *data);
-void		run_child_processes(t_cmd *cmd, t_shell_data *data);
 
-/* loop.c */
-void		start_minishell(t_shell_data *data);
+/* process_manager.c */
+void		run_child_processes(t_cmd *cmd_list, t_shell_data *data);
 
 /* make_fake_cmd.c */
 t_cmd		*make_fake_cmd(void);
