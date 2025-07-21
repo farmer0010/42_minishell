@@ -41,25 +41,3 @@ int	is_numeric(const char *str)
 	}
 	return (1);
 }
-
-long long	ft_atoll(const char *str)
-{
-	long long	res;
-	int			sign;
-
-	res = 0;
-	sign = 1;
-	while (ft_isspace(*str))
-		str++;
-	if (*str == '-')
-		sign = -1;
-	if (*str == '-' || *str == '+')
-		str++;
-	while (ft_isdigit(*str))
-	{
-		res = res * 10 + (*str - '0');
-		str++;
-	}
-	return (res * sign);
-}
-

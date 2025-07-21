@@ -36,4 +36,3 @@ int	handle_redirects(t_cmd *cmd)
 	}
 	return (0);
 }
-

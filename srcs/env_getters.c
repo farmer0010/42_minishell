@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cmds.c                                     :+:      :+:    :+:   */
+/*   env_getters.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/10 09:30:38 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/10 09:30:40 by juyoukim         ###   ########.fr       */
+/*   Created: 2025/07/21 14:19:47 by juyoukim          #+#    #+#             */
+/*   Updated: 2025/07/21 14:19:50 by juyoukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_cmds(t_shell_data *data)
+static t_env	*get_env_node(t_list *env_list, const char *key)
 {
-	t_cmd	*cmd_list;
+	t_env	*env;
 
-	cmd_list = data->cmd_list;
-	if (!cmd_list || !cmd_list->argv || !cmd_list->argv[0])
+	while (env_list)
 	{
-		g_exit_status = 0;
-		return ;
+		env = (t_env *)env_list->content;
+		if (ft_strcmp(env->key, key) == 0)
+			return (env);
+		env_list = env_list->next;
 	}
-	if (!cmd_list->next && is_builtin(cmd_list->argv[0]))
-		handle_single_builtin(cmd_list, data);
-	else
-		handle_multiple_cmds(data, cmd_list);
+	return (NULL);
+}
+
+char	*get_env_value(t_list *env_list, const char *key)
+{
+	t_env	*env;
+
+	env = get_env_node(env_list, key);
+	if (env == NULL)
+		return (NULL);
+	return (env->value);
 }

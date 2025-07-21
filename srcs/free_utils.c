@@ -12,60 +12,6 @@
 
 #include "minishell.h"
 
-void	free_argv(char **argv)
-{
-	int	i;
-
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
-}
-
-void	free_cmd_list(t_cmd *cmd_list)
-{
-	t_cmd	*current;
-	t_cmd	*next_cmd;
-
-	current = cmd_list;
-	while (current)
-	{
-		next_cmd = current->next;
-		if (current->argv)
-			free_argv(current->argv);
-		if (current->infile != -1)
-			close(current->infile);
-		if (current->outfile != -1)
-			close(current->outfile);
-		free(current);
-		current = next_cmd;
-	}
-}
-
-void	free_token_list(t_node *token_list)
-{
-	t_node	*current;
-	t_node	*next_node;
-
-	current = token_list;
-	while (current)
-	{
-		next_node = current->next;
-		if (current->token)
-		{
-			free(current->token->value);
-			free(current->token);
-		}
-		free(current);
-		current = next_node;
-	}
-}
-
 void	free_pipes(int **pipefd, int count)
 {
 	int	i;
@@ -82,10 +28,8 @@ void	free_pipes(int **pipefd, int count)
 	free(pipefd);
 }
 
-void	free_all(t_shell_data *data)
+static void	free_resources(t_shell_data *data)
 {
-	if (!data)
-		return ;
 	if (data->cmd_list)
 	{
 		free_cmd_list(data->cmd_list);
@@ -106,6 +50,10 @@ void	free_all(t_shell_data *data)
 		free_pipes(data->pipe_data.pipefd, data->pipe_data.count - 1);
 		data->pipe_data.pipefd = NULL;
 	}
+}
+
+static void	close_backups(t_shell_data *data)
+{
 	if (data->stdin_backup != -1)
 	{
 		close(data->stdin_backup);
@@ -118,3 +66,10 @@ void	free_all(t_shell_data *data)
 	}
 }
 
+void	free_all(t_shell_data *data)
+{
+	if (!data)
+		return ;
+	free_resources(data);
+	close_backups(data);
+}
