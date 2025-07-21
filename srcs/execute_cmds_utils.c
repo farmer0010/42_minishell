@@ -10,27 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-static char	*get_path_env(char **envp)
+static char	*get_path_env_from_list(t_list *env_list)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (!ft_strncmp(envp[i], "PATH=", 5))
-			return (envp[i] + 5);
-		i++;
-	}
-	return (NULL);
+	return (get_env_value(env_list, "PATH"));
 }
 
-static char	**get_paths(char **envp)
+static char	**get_paths(t_list *env_list)
 {
 	char	*path_env;
 
-	path_env = get_path_env(envp);
+	path_env = get_path_env_from_list(env_list);
 	if (!path_env)
 		return (NULL);
 	return (ft_split(path_env, ':'));
@@ -56,14 +47,26 @@ static char	*search_path(char **paths, char *cmd_name)
 	return (NULL);
 }
 
-char	*find_executable(char *cmd_name, char **envp)
+char	*find_executable(char *cmd_name, t_list *env_list)
 {
 	char	**paths;
 	char	*exec_path;
 
-	paths = get_paths(envp);
-	if (!paths)
+	if (!cmd_name || ft_strlen(cmd_name) == 0)
 		return (NULL);
+	if (ft_strchr(cmd_name, '/'))
+	{
+		if (access(cmd_name, X_OK) == 0)
+			return (ft_strdup(cmd_name));
+		return (NULL);
+	}
+	paths = get_paths(env_list);
+	if (!paths)
+	{
+		if (access(cmd_name, X_OK) == 0)
+			return (ft_strdup(cmd_name));
+		return (NULL);
+	}
 	exec_path = search_path(paths, cmd_name);
 	free_argv(paths);
 	return (exec_path);

@@ -10,9 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juyoukim <juyoukim@student.42gyeongsa.kr> +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/13 16:27:04 by juyoukim          #+#    #+#             */
+/*   Updated: 2025/07/13 16:27:05 by juyoukim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-extern char	**environ;
+#include "minishell.h"
+
+static int	is_valid_n_option(const char *arg)
+{
+	int	i;
+
+	if (arg[0] != '-' || arg[1] != 'n')
+		return (FALSE);
+	i = 2;
+	while (arg[i] == 'n')
+		i++;
+	return (arg[i] == '\0');
+}
 
 int	builtin_echo(char **argv)
 {
@@ -20,10 +42,10 @@ int	builtin_echo(char **argv)
 	int	newline_flag;
 
 	i = 1;
-	newline_flag = 1;
-	while (argv[i] && ft_strncmp(argv[i], "-n", 3) == 0)
+	newline_flag = TRUE;
+	while (argv[i] && is_valid_n_option(argv[i]))
 	{
-		newline_flag = 0;
+		newline_flag = FALSE;
 		i++;
 	}
 	while (argv[i])
@@ -35,19 +57,21 @@ int	builtin_echo(char **argv)
 	}
 	if (newline_flag)
 		printf("\n");
+	g_exit_status = 0;
 	return (0);
 }
 
-int	builtin_cd(char **argv)
+int	builtin_cd(char **argv, t_list *env_list)
 {
 	char	*path;
 
-	if (! argv[1])
+	if (!argv[1])
 	{
-		path = getenv("HOME");
-		if (! path)
+		path = get_env_value(env_list, "HOME");
+		if (!path)
 		{
 			write(2, "minishell: cd: HOME not set\n", 28);
+			g_exit_status = 1;
 			return (1);
 		}
 	}
@@ -56,60 +80,73 @@ int	builtin_cd(char **argv)
 	if (chdir(path) == -1)
 	{
 		perror("minishell: cd");
+		g_exit_status = 1;
 		return (1);
 	}
+	g_exit_status = 0;
 	return (0);
 }
 
 int	builtin_pwd(void)
 {
-	char	*cwd;
+	char	cwd[4096];
 
-	cwd = malloc(4096);
-	if (! cwd)
-		return (1);
 	if (getcwd(cwd, 4096) == NULL)
 	{
 		perror("minishell: pwd");
-		free(cwd);
+		g_exit_status = 1;
 		return (1);
 	}
 	printf("%s\n", cwd);
-	free(cwd);
+	g_exit_status = 0;
 	return (0);
 }
 
-int	builtin_env(void)
+int	builtin_env(t_list *env_list)
 {
-	int	i;
+	t_list	*current;
+	t_env	*env;
 
-	i = 0;
-	while (environ[i])
+	current = env_list;
+	while (current)
 	{
-		if (ft_strchr(environ[i], "="))
-			printf("%s\n", environ[i]);
-		i++;
+		env = (t_env *)current->content;
+		if (env->value)
+			printf("%s=%s\n", env->key, env->value);
+		current = current->next;
 	}
+	g_exit_status = 0;
 	return (0);
 }
 
-int	builtin_exit(char **argv)
+int	builtin_exit(char **argv, t_shell_data *data)
 {
-	int	exit_code;
+	long long	exit_code;
 
 	printf("exit\n");
-	if (! argv[1])
-		exit(0);
-	if (! is_numeric(argv[1]))
+	if (argv[1])
 	{
-		write(2, "minishell: exit: numeric argument required\n", 43);
-		exit(255);
+		if (!is_numeric(argv[1]))
+		{
+			write(2, "minishell: exit: ", 17);
+			write(2, argv[1], ft_strlen(argv[1]));
+			write(2, ": numeric argument required\n", 28);
+			free_all(data);
+			exit(255);
+		}
+		if (argv[2])
+		{
+			write(2, "minishell: exit: too many arguments\n", 36);
+			g_exit_status = 1;
+			return (1);
+		}
+		exit_code = ft_atoll(argv[1]);
+		exit_code = (exit_code % 256 + 256) % 256;
 	}
-	if (argv[2])
-	{
-		write(2, "minishell: exit: too many arguments\n", 36);
-		return (1);
-	}
-	exit_code = ft_atoi(argv[1]);
+	else
+		exit_code = g_exit_status;
+	free_all(data);
 	exit(exit_code);
 }
+
+

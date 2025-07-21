@@ -10,81 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-extern char	**environ;
-
-static int	is_valid_identifier(const char *str)
+int	builtin_unset(char **argv, t_list **env_list)
 {
 	int	i;
+	int	ret_status;
 
-	if (!str || !ft_isalpha(str[0]))
-		return (0);
-	i = 1;
-	while (str[i] && str[i] != '=')
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static int	starts_with(const char *str, const char *prefix)
-{
-	int	i;
-
-	i = 0;
-	while (prefix[i])
-	{
-		if (prefix[i] != str[i])
-			return (0);
-		i++;
-	}
-	if (str[i] == '=' || str[i] == '\0')
-		return (1);
-	return (0);
-}
-
-static void	remove_env_var(const char *name)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (environ[i])
-	{
-		if (starts_with(environ[i], name))
-		{
-			free(environ[i]);
-			j = i;
-			while (environ[j])
-			{
-				environ[j] = environ[j + 1];
-				j++;
-			}
-			i--;
-		}
-		i++;
-	}
-}
-
-int	builtin_unset(char **argv)
-{
-	int	i;
-
+	ret_status = 0;
 	if (!argv[1])
 		return (0);
 	i = 1;
 	while (argv[i])
 	{
-		if (!is_valid_identifier(argv[i]))
+		if (!is_valid_identifier(argv[i]) || ft_strchr(argv[i], '='))
 		{
-			write(2, "minishell: unset: not a valid identifier\n", 41);
-			return (1);
+			write(2, "minishell: unset: `", 19);
+			write(2, argv[i], ft_strlen(argv[i]));
+			write(2, "': not a valid identifier\n", 26);
+			ret_status = 1;
 		}
-		remove_env_var(argv[i]);
+		else
+		{
+			if (unset_env_value(env_list, argv[i]) == -1)
+				ret_status = 1;
+		}
 		i++;
 	}
-	return (0);
+	g_exit_status = ret_status;
+	return (ret_status);
 }
+

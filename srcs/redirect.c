@@ -10,35 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-int	handle_redirect_in(t_cmd *cmd)
-{
-	if (cmd -> infile != -1)
-	{
-		if (dup2(cmd -> infile, STDIN_FILENO) == -1)
-		{
-			perror("dup2 (infile)");
-			return (1);
-		}
-		close(cmd -> infile);
-	}
-	return (0);
-}
-
-int	handle_redirect_out(t_cmd *cmd)
-{
-	if (cmd -> outfile != -1)
-	{
-		if (dup2(cmd -> outfile, STDOUT_FILENO) == -1)
-		{
-			perror("dup2 (outfile)");
-			return (1);
-		}
-		close(cmd -> outfile);
-	}
-	return (0);
-}
+#include "minishell.h"
 
 int	handle_redirects(t_cmd *cmd)
 {
@@ -46,7 +18,8 @@ int	handle_redirects(t_cmd *cmd)
 	{
 		if (dup2(cmd->infile, STDIN_FILENO) == -1)
 		{
-			perror("dup2 (infile)");
+			perror("minishell: dup2 (infile) failed");
+			close(cmd->infile);
 			return (1);
 		}
 		close(cmd->infile);
@@ -55,10 +28,12 @@ int	handle_redirects(t_cmd *cmd)
 	{
 		if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
 		{
-			perror("dup2 (outfile)");
+			perror("minishell: dup2 (outfile) failed");
+			close(cmd->outfile);
 			return (1);
 		}
 		close(cmd->outfile);
 	}
 	return (0);
 }
+

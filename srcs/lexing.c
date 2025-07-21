@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void	get_token_info(const char *cmd, t_node **head)
 {
 	t_state	state;
