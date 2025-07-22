@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/16 14:13:30 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:49:34 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,16 @@ typedef enum e_token_type {
     REDIRECT_APPEND
 } t_token_type;
 
+typedef enum e_quote_type {
+    not_q,
+    s_q,
+    d_q
+}   t_quote_type;
+
 typedef struct s_token {
     char *value;
     t_token_type type;
+    t_quote_type quote_status;
 } t_token;
 // 여기서 lexing이 완료되어서 토큰화 되어서 이 구조체에 저장된 정보는
 // 원자적인 최소단위 정보이다.
@@ -95,7 +102,7 @@ int		ft_isoper(char c);
 int		ft_isspace(char c);
 
 // list_func.c
-t_node	*create_node(int type, char *value);
+t_node	*create_node(int type, t_quote_type q, char *value);
 void	append_token(t_node **head, t_node *node);
 
 #endif

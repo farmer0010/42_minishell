@@ -6,7 +6,7 @@
 #    By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 13:39:56 by taewonki          #+#    #+#              #
-#    Updated: 2025/07/16 13:49:01 by taewonki         ###   ########.fr        #
+#    Updated: 2025/07/16 18:02:12 by taewonki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -Iincludes -I$(LIBFT_DIR)
 
 SRC_DIR = srcs
-LIBFT_DIR = libft
+LIBFT_DIR = Libft
 
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 
