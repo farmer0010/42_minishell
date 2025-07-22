@@ -6,42 +6,36 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 13:21:02 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/07/22 10:12:57 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:51:06 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	get_token_info(const char *cmd, t_node **head);
+int	get_token_info(const char *cmd, t_token **head);
 
-void	get_token_info(const char *cmd, t_node **head)
+void	get_token_info(const char *cmd, t_token **head)
 {
 	t_state	state;
 	int		i;
+	int		lex_status;
 
 	i = 0;
 	state = s_in_general;
 	while (cmd[i])
 	{
 		if (state == s_in_general)
-		{
-			handle_general(cmd, &i, &state, head);
-			continue ;
-		}
+			lex_status = handle_general(cmd, &i, &state, head);
 		else if (state == s_in_single_quote)
-		{
-			handle_s_quote(cmd, &i, &state, head);
-			continue ;
-		}
+			lex_status = handle_s_quote(cmd, &i, &state, head);
 		else if (state == s_in_double_quote)
-		{
-			handle_d_quote(cmd, &i, &state, head);
-			continue;
-		}
+			lex_status = handle_d_quote(cmd, &i, &state, head);
 		else if (state == s_in_word)
+			lex_status = handle_in_word(cmd, &i, &state, head);
+		if (lex_status < 0)
 		{
-			handle_in_word(cmd, &i, &state, head);
-			continue;
+			ft_free_lst(head);
+			return ;
 		}
 	}
 }

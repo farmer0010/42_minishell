@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cmds.c                                     :+:      :+:    :+:   */
+/*   builtin_env.c                                       :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/10 09:30:38 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/10 09:30:40 by juyoukim         ###   ########.fr       */
+/*   Created: 2025/07/13 16:27:04 by juyoukim          #+#    #+#             */
+/*   Updated: 2025/07/13 16:27:05 by juyoukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_cmds(t_shell_data *data)
+int	builtin_env(t_list *env_list)
 {
-	t_cmd	*cmd_list;
+	t_list	*current;
+	t_env	*env;
 
-	cmd_list = data->cmd_list;
-	if (!cmd_list || !cmd_list->argv || !cmd_list->argv[0])
+	current = env_list;
+	while (current)
 	{
-		g_exit_status = 0;
-		return ;
+		env = (t_env *)current->content;
+		if (env->value)
+			printf("%s=%s\n", env->key, env->value);
+		current = current->next;
 	}
-	if (!cmd_list->next && is_builtin(cmd_list->argv[0]))
-		handle_single_builtin(cmd_list, data);
-	else
-		handle_multiple_cmds(data, cmd_list);
+	g_exit_status = 0;
+	return (0);
 }

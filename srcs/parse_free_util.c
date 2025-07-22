@@ -6,27 +6,26 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:19:25 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/21 17:54:27 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/22 13:21:57 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_lst(t_node **head)
+void	ft_free_lst(t_token **head)
 {
-	t_node	*cur;
-	t_node	*temp;
+	t_token	*cur;
+	t_token	*temp;
 
 	if (!head)
 		return ;
 	cur = *head;
 	while (cur)
 	{
-		cur = *head;
 		temp = cur;
-		free(cur->token->value);
-		free(cur->token);
+		free(cur->val);
 		cur = cur->next;
 		free(temp);
 	}
+	*head = NULL;
 }

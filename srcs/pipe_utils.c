@@ -10,13 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int	**create_pipes(int count)
 {
-	int	**pipefd;
-	int	i;
+	int		**pipefd;
+	int		i;
 
+	if (count <= 0)
+		return (NULL);
 	pipefd = (int **)malloc(sizeof(int *) * count);
 	if (!pipefd)
 		return (NULL);
@@ -28,26 +30,12 @@ int	**create_pipes(int count)
 			return (free_pipes(pipefd, i), NULL);
 		if (pipe(pipefd[i]) == -1)
 		{
-			perror("pipe");
+			perror("minishell: pipe failed");
 			return (free_pipes(pipefd, i + 1), NULL);
 		}
 		i++;
 	}
 	return (pipefd);
-}
-
-void	free_pipes(int **pipefd, int count)
-{
-	int	i;
-
-	i = 0;
-	while (i < count)
-	{
-		if (pipefd[i])
-			free(pipefd[i]);
-		i++;
-	}
-	free(pipefd);
 }
 
 void	setup_pipes(int idx, int count, int **pipefd)
@@ -56,7 +44,7 @@ void	setup_pipes(int idx, int count, int **pipefd)
 	{
 		if (dup2(pipefd[idx - 1][0], STDIN_FILENO) == -1)
 		{
-			perror("dup2 in setup_pipes (read)");
+			perror("minishell: dup2 (pipe read end) failed");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -64,7 +52,7 @@ void	setup_pipes(int idx, int count, int **pipefd)
 	{
 		if (dup2(pipefd[idx][1], STDOUT_FILENO) == -1)
 		{
-			perror("dup2 in setup_pipes (write)");
+			perror("minishell: dup2 (pipe write end) failed");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -74,6 +62,8 @@ void	close_unused_pipes(int **pipefd, int count)
 {
 	int	i;
 
+	if (!pipefd)
+		return ;
 	i = 0;
 	while (i < count)
 	{

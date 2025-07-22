@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int	is_single_builtin(t_cmd *cmd)
 {
-
+	if (!cmd || cmd->next)
+		return (FALSE);
+	return (is_builtin(cmd->argv[0]));
 }

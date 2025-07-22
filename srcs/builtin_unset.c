@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_utils3.c                                   :+:      :+:    :+:   */
+/*   builtin_unset.c                                     :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -40,4 +40,3 @@ int	builtin_unset(char **argv, t_list **env_list)
 	g_exit_status = ret_status;
 	return (ret_status);
 }
-

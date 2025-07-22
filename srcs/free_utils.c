@@ -10,22 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-void	free_argv(char **argv)
-{
-	int	i;
-
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
-}
+#include "minishell.h"
 
 void	free_pipes(int **pipefd, int count)
 {
@@ -41,4 +26,50 @@ void	free_pipes(int **pipefd, int count)
 		i++;
 	}
 	free(pipefd);
+}
+
+static void	free_resources(t_shell_data *data)
+{
+	if (data->cmd_list)
+	{
+		free_cmd_list(data->cmd_list);
+		data->cmd_list = NULL;
+	}
+	if (data->token_list)
+	{
+		free_token_list(data->token_list);
+		data->token_list = NULL;
+	}
+	if (data->env_list)
+	{
+		ft_lstclear(&(data->env_list), free_env_node);
+		data->env_list = NULL;
+	}
+	if (data->pipe_data.pipefd)
+	{
+		free_pipes(data->pipe_data.pipefd, data->pipe_data.count - 1);
+		data->pipe_data.pipefd = NULL;
+	}
+}
+
+static void	close_backups(t_shell_data *data)
+{
+	if (data->stdin_backup != -1)
+	{
+		close(data->stdin_backup);
+		data->stdin_backup = -1;
+	}
+	if (data->stdout_backup != -1)
+	{
+		close(data->stdout_backup);
+		data->stdout_backup = -1;
+	}
+}
+
+void	free_all(t_shell_data *data)
+{
+	if (!data)
+		return ;
+	free_resources(data);
+	close_backups(data);
 }
