@@ -40,7 +40,7 @@ int	exec_builtin(t_cmd *cmd, t_shell_data *data)
 	if (ft_strcmp(cmd->argv[0], "echo") == 0)
 		return (builtin_echo(cmd->argv));
 	if (ft_strcmp(cmd->argv[0], "cd") == 0)
-		return (builtin_cd(cmd->argv, data->env_list));
+		return (builtin_cd(cmd->argv, data));
 	if (ft_strcmp(cmd->argv[0], "pwd") == 0)
 		return (builtin_pwd());
 	if (ft_strcmp(cmd->argv[0], "export") == 0)

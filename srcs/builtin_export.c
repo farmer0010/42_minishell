@@ -48,7 +48,7 @@ void	handle_export_arg(const char *arg, t_list **env_list)
 		handle_export_no_value(env_list, arg);
 }
 
-int	builtin_export(char **argv, t_list *env_list)
+int	builtin_export(char **argv, t_list **env_list)
 {
 	int	i;
 	int	ret_status;
@@ -56,13 +56,13 @@ int	builtin_export(char **argv, t_list *env_list)
 	ret_status = 0;
 	if (!argv[1])
 	{
-		print_export_env(env_list);
+		print_export_env(*env_list);
 		return (0);
 	}
 	i = 1;
 	while (argv[i])
 	{
-		handle_export_arg(argv[i], &env_list);
+		handle_export_arg(argv[i], env_list);
 		if (g_exit_status == 1)
 			ret_status = 1;
 		g_exit_status = 0;

@@ -151,7 +151,7 @@ int			builtin_env(t_list *env_list);
 int			builtin_exit(char **argv, t_shell_data *data);
 
 /* builtin_export.c */
-int			builtin_export(char **argv, t_list *env_list);
+int			builtin_export(char **argv, t_list **env_list);
 void		handle_export_arg(const char *arg, t_list **env_list);
 void		handle_export_with_value(t_list **env_list,
 				const char *arg, char *equal_sign);
@@ -192,6 +192,7 @@ t_env		*create_env_node_content(const char *key, const char *value);
 int			**create_pipes(int count);
 void		setup_pipes(int idx, int count, int **pipefd);
 void		close_unused_pipes(int **pipefd, int count);
+void		close_all_pipe_fds_in_child(int **pipefd, int count);
 
 /* process_child.c */
 void		child_process(t_cmd *cmd, t_shell_data *data);

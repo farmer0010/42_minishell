@@ -47,6 +47,7 @@ void	setup_pipes(int idx, int count, int **pipefd)
 			perror("minishell: dup2 (pipe read end) failed");
 			exit(EXIT_FAILURE);
 		}
+		close(pipefd[idx - 1][0]);
 	}
 	if (idx < count - 1)
 	{
@@ -55,8 +56,33 @@ void	setup_pipes(int idx, int count, int **pipefd)
 			perror("minishell: dup2 (pipe write end) failed");
 			exit(EXIT_FAILURE);
 		}
+		close(pipefd[idx][1]);
 	}
 }
+
+void	close_all_pipe_fds_in_child(int **pipefd, int count)
+{
+	int	i;
+
+	if (!pipefd)
+		return ;
+	i = 0;
+	while (i < count)
+	{
+		if (pipefd[i][0] != -1)
+		{
+			close(pipefd[i][0]);
+			pipefd[i][0] = -1;
+		}
+		if (pipefd[i][1] != -1)
+		{
+			close(pipefd[i][1]);
+			pipefd[i][1] = -1;
+		}
+		i++;
+	}
+}
+
 
 void	close_unused_pipes(int **pipefd, int count)
 {

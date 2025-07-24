@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+int	ft_isspace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
+}
+
 static int	parse_sign_and_skip(const char **str)
 {
 	while (ft_isspace(**str))
