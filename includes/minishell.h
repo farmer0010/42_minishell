@@ -94,6 +94,7 @@ typedef struct s_shell_data
 {
 	t_list		*env_list;
 	t_cmd		*cmd_list;
+	t_token		*token_list;
 	t_pipe_data	pipe_data;
 	int			stdin_backup;
 	int			stdout_backup;
@@ -121,7 +122,7 @@ long long	ft_atoll(const char *str);
 /* free_utils.c */
 void		free_argv(char **argv);
 void		free_cmd_list(t_cmd *cmd_list);
-void		free_token_list(t_node *token_list);
+void		free_token_list(t_token *token_list);
 void		free_env_node(void *content);
 void		free_pipes(int **pipefd, int count);
 void		free_env_array(char **env_array);
