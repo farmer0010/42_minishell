@@ -6,14 +6,14 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 00:56:05 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/07/22 13:22:56 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:14:59 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_token	*create_token(int type, t_quote_type q, char *val);
-void	append_token(t_token **head, t_token *token);
+int		append_token(t_token **head, t_token *token);
 
 t_token	*create_token(int type, t_quote_type q, char *val)
 {
@@ -33,7 +33,7 @@ t_token	*create_token(int type, t_quote_type q, char *val)
 	return (token);
 }
 
-int	append_token(t_token **head, t_token *token)
+int append_token(t_token **head, t_token *token)
 {
 	t_token	*cur;
 

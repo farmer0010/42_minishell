@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/22 13:38:37 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:13:42 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ typedef struct s_shell_data
 {
 	t_list		*env_list;
 	t_cmd		*cmd_list;
-	t_node		*token_list;
 	t_pipe_data	pipe_data;
 	int			stdin_backup;
 	int			stdout_backup;
@@ -209,11 +208,11 @@ int			ft_isspace(char c);
 int			ft_isoper(char c);
 
 /* parse_free_util.c */
-void		ft_free_lst(t_node **head);
+void		ft_free_lst(t_token **head);
 
 /* list_func.c */
-t_node		*create_node(int type, t_quote_type q, char *value);
-void		append_token(t_node **head, t_node *node);
+t_token		*create_token(int type, t_quote_type q, char *val);
+int			append_token(t_token **head, t_token *token);
 
 
 
