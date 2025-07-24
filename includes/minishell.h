@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/24 13:13:42 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:42:48 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ int			handle_redirects(t_cmd *cmd);
 int			ft_strcmp(const char *s1, const char *s2);
 int			is_numeric(const char *str);
 long long	ft_atoll(const char *str);
+char		*ft_strjoin_free(char *s1, char *s2);
 
 /* free_utils.c */
 void		free_argv(char **argv);
