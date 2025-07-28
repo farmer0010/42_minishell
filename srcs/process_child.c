@@ -24,8 +24,8 @@ static void	setup_child_pipes(t_shell_data *data)
 		data->pipe_data.count, data->pipe_data.pipefd);
 }
 
-static char	**prepare_exec_data(t_cmd *cmd, t_shell_data *data
-	, char **exec_path)
+static char	**prepare_exec_data(t_cmd *cmd,
+	t_shell_data *data, char **exec_path)
 {
 	char	**env_array;
 
@@ -51,7 +51,7 @@ static void	exec_command(t_cmd *cmd, t_shell_data *data)
 	{
 		if (!exec_path)
 		{
-			write(2, "minishell: command not found: ", 31);
+			write(2, "minishell: command not found: ", 30);
 			write(2, cmd->argv[0], ft_strlen(cmd->argv[0]));
 			write(2, "\n", 1);
 			free_all(data);
@@ -74,7 +74,7 @@ void	child_process(t_cmd *cmd, t_shell_data *data)
 	setup_child_signals();
 	setup_child_pipes(data);
 	close_all_pipe_fds_in_child(data->pipe_data.pipefd,
-			data->pipe_data.count - 1);
+		data->pipe_data.count - 1);
 	if (handle_redirects(cmd))
 	{
 		free_all(data);

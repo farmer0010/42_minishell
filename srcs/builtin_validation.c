@@ -37,22 +37,30 @@ void	handle_export_key_value(t_list **env_list, char *key, char *value)
 	}
 }
 
-void	handle_export_with_value(t_list **env_list, const char *arg
-	, char *equal_sign)
+void	handle_export_with_value(t_list **env_list, const char *arg,
+		char *equal_sign)
 {
 	char	*key;
 	char	*value;
 
 	key = ft_substr(arg, 0, equal_sign - arg);
-	value = equal_sign + 1;
 	if (!key)
 	{
-		perror("minishell: export: malloc failed");
+		perror("minishell: export: malloc failed for key");
+		g_exit_status = 1;
+		return ;
+	}
+	value = ft_strdup(equal_sign + 1);
+	if (!value)
+	{
+		free(key);
+		perror("minishell: export: malloc failed for value");
 		g_exit_status = 1;
 		return ;
 	}
 	handle_export_key_value(env_list, key, value);
 	free(key);
+	free(value);
 }
 
 void	handle_export_no_value(t_list **env_list, const char *arg)

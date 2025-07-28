@@ -70,19 +70,12 @@ void	close_all_pipe_fds_in_child(int **pipefd, int count)
 	while (i < count)
 	{
 		if (pipefd[i][0] != -1)
-		{
 			close(pipefd[i][0]);
-			pipefd[i][0] = -1;
-		}
 		if (pipefd[i][1] != -1)
-		{
 			close(pipefd[i][1]);
-			pipefd[i][1] = -1;
-		}
 		i++;
 	}
 }
-
 
 void	close_unused_pipes(int **pipefd, int count)
 {

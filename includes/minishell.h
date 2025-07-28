@@ -182,6 +182,7 @@ char		*get_env_value(t_list *env_list, const char *key);
 int			set_env_value(t_list **env_list,
 				const char *key, const char *value);
 int			unset_env_value(t_list **env_list, const char *key);
+void		free_env_content(void *content);
 
 /* env_convert.c */
 char		**convert_env_list_to_array(t_list *env_list);
