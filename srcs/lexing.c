@@ -6,13 +6,13 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 13:21:02 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/07/22 13:51:06 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/28 11:26:28 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_token_info(const char *cmd, t_token **head);
+void	get_token_info(const char *cmd, t_token **head);
 
 void	get_token_info(const char *cmd, t_token **head)
 {
