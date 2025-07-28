@@ -47,20 +47,17 @@ void	free_cmd_list(t_cmd *cmd_list)
 	}
 }
 
-void	free_token_list(t_node *token_list)
+void	free_token_list(t_token *token_list)
 {
-	t_node	*current;
-	t_node	*next_node;
+	t_token	*current;
+	t_token	*next_node;
 
 	current = token_list;
 	while (current)
 	{
 		next_node = current->next;
-		if (current->token)
-		{
-			free(current->token->value);
-			free(current->token);
-		}
+		if (current->val)
+			free(current->val);
 		free(current);
 		current = next_node;
 	}
