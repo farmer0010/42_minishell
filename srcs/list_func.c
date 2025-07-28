@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 00:56:05 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/07/24 13:14:59 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:48:13 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int append_token(t_token **head, t_token *token)
 	}
 	if (!*head)
 	{
-		*head =*token;
+		*head = token;
 		return (1);
 	}
 	cur = *head;
 	while (cur->next)
 		cur = cur->next;
-	cur->next =*token;
-	*token->prev = cur;
+	cur->next = token;
+	token->prev = cur;
 	return (1);
 }
