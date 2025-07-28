@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:54:14 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/16 10:48:21 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/28 11:25:20 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int		ft_isquote(char c);
 int		ft_isspace(char c);
-char	handle_escape(char c);
 int		ft_isoper(char c);
 
 int		ft_isspace(char c)
@@ -45,28 +44,4 @@ int	ft_isoper(char c)
 		return (REDIRECT_OUT);
 	else
 		return (0);
-}
-
-char	handle_escape(char c)
-{
-if (c == 'n')
-		return ('\n');
-	else if (c == 't')
-		return ('\t');
-	else if (c == 'r')
-		return ('\r');
-	else if (c == 'v')
-		return ('\v');
-	else if (c == 'f')
-		return ('\f');
-	else if (c == '\"')
-		return ('\"');
-	else if (c == ' ')
-		return (' ');
-	else if (c == '\\')
-		return ('\\');
-	else if (c == '\'')
-		return ('\'');
-	else
-		return (c);
 }
