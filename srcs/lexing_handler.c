@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:13:13 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/22 13:40:05 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/28 11:19:32 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@ int	handle_in_oper(const char *cmd, int *i, t_token **head)
 			return (append_token(head, create_token(HERE_DOC, not_q,\
 				ft_strdup("<<"))), *i += 2, HERE_DOC);
 		else
-			return (append_token(head, create_token(REDIRECT_IN, not_q\
+			return (append_token(head, create_token(REDIRECT_IN, not_q, \
 				ft_strdup("<"))), (*i)++, REDIRECT_IN);
 	}
 	else if (ft_isoper(cmd[*i]) == REDIRECT_OUT)
 	{
-		if (cmd[*i + 1] && ft_isoper(cmd[i + 1]) == REDIRECT_OUT)
-			return (append_token(head, create_token(REDIRECT_APPEND, not_q\
+		if (cmd[*i + 1] && ft_isoper(cmd[*i + 1]) == REDIRECT_OUT)
+			return (append_token(head, create_token(REDIRECT_APPEND, not_q, \
 				ft_strdup(">>"))), *i += 2, REDIRECT_APPEND);
 		else
-			return (append_token(head, create_token(REDIRECT_OUT, not_q\
+			return (append_token(head, create_token(REDIRECT_OUT, not_q, \
 				ft_strdup(">"))), (*i)++, REDIRECT_OUT);
 	}
 }
@@ -97,7 +97,7 @@ int		handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
 	{
 		val = ft_substr(cmd, *i, end_i - *i);
 		if (val == NULL)
-			return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR));
+			return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR), -1);
 		*i = end_i + 1;
 		*s = s_in_general;
 		if (!append_token(head, create_token(WORD, d_q, val)))
@@ -122,7 +122,7 @@ int		handle_in_word(const char *cmd, int *i, t_state *s, t_token **head)
 		end_i++;
 	val = ft_substr(cmd, *i, end_i - *i);
 	if (val == NULL)
-			return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR));
+			return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR), -1);
 	*i = end_i;
 	*s = s_in_general;
 	if (!append_token(head, create_token(WORD, not_q, val)))
