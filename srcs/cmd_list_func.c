@@ -6,11 +6,17 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/28 13:45:37 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 10:34:48 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_cmd	*create_cmd_node(t_token *start, t_token *end);
+t_cmd	*get_cmd_list(t_token **head);
+int		append_cmd(t_cmd **head, t_cmd *cmd);
+t_cmd	*get_last_cmd(t_cmd *head);
+int		create_append_cmd(t_cmd **head, t_token *start, t_token *end);
 
 t_cmd	*create_cmd_node(t_token *start, t_token *end)
 {
@@ -26,7 +32,6 @@ t_cmd	*create_cmd_node(t_token *start, t_token *end)
 		return (NULL);
 	cmd->infile = STDIN_FILENO;
 	cmd->outfile = STDOUT_FILENO;
-	cmd->temp_file = NULL;
 	if (get_argv_set_fd(cmd, start, &argv_len) < 0)
 		return (free(cmd), NULL);
 	cur = start;
@@ -64,7 +69,6 @@ t_cmd	*get_cmd_list(t_token **head)
 	t_token *cur;
 	t_token *block_start;
 	t_cmd *head_cmd;
-	t_cmd *new_cmd;
 
 	if (!head || !*head)
 		return (NULL);
@@ -75,34 +79,16 @@ t_cmd	*get_cmd_list(t_token **head)
 	{
 		if (cur->type == PIPE)
 		{
-			new_cmd = create_cmd_node(block_start, cur->prev);
-			if (!new_cmd)
-			{
-				ft_free_cmd_list(head_cmd);
-				return (ft_putstr_fd("create_cmd() fail\n", 2), NULL);
-			}
-			block_start = cur->next;
-			if (append_cmd(&head_cmd, new_cmd) < 0)
-			{
-				ft_putstr_fd("append_cmd() fail\n", 2);
+			if (create_append_cmd(&head_cmd, block_start, cur) < 0)
 				return (ft_free_cmd_list(head_cmd), NULL);
-			}
+			block_start = cur->next;
 		}
 		cur = cur->next;
 	}
 	if (block_start)
 	{
-		new_cmd = create_cmd_node(block_start, get_last_cmd(head_cmd));
-		if (!new_cmd)
-		{
-			ft_free_cmd_list(head_cmd);
-			return (ft_putstr_fd("create_cmd() fail\n", 2), NULL);
-		}
-		if (append_cmd(&head_cmd, new_cmd) < 0)
-		{
-			ft_putstr_fd("append_cmd() fail\n", 2);
+		if (create_append_cmd(&head_cmd, block_start, cur) < 0)
 			return (ft_free_cmd_list(head_cmd), NULL);
-		}
 	}
 	return (head_cmd);
 }
@@ -121,9 +107,9 @@ int	append_cmd(t_cmd **head, t_cmd *cmd)
 		*head = cmd;
 		return (1);
 	}
-	cur = *head;
-	while (cur->next)
-		cur = cur->next;
+	cur = get_last_cmd(*head);
+	if (!cur)
+		return (-1);
 	cur->next = cmd;
 	return (1);
 }
@@ -138,4 +124,21 @@ t_cmd	*get_last_cmd(t_cmd *head)
 	while (cur->next)
 		cur = cur->next;
 	return (cur);
+}
+
+int	create_append_cmd(t_cmd **head, t_token *start, t_token *end)
+{
+	t_cmd	*new_cmd;
+
+	if (!head || !start || !end)
+		return (-1);
+	new_cmd = create_cmd_node(start, end);
+	if (!new_cmd)
+		return (perror("malloc failed in create_append_cmd()\n"), -1);
+	if (append_cmd(head, new_cmd) < 0)
+	{
+		ft_free_cmd_list(*head);
+		return (-1);
+	}
+	return (1);
 }

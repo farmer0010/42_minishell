@@ -6,44 +6,47 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/28 13:48:12 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/28 14:29:29 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	here_doc(char *end);
+int	here_doc(char *end, char *filepath);
 
-static int open_here_doc_file(void)
+static char	*open_here_doc_file(int *fd)
 {
 	static int	file_no;
-	int 		fd;
 	char		*filename;
+	char		*num;
 
-	filename = ft_strjoin(".heredoc_tmp", ft_itoa(file_no++));
+	num = ft_itoa(file_no++);
+	if (!num)
+		return (perror("malloc() fail\n"), NULL);
+	filename = ft_strjoin(".heredoc_tmp", num);
+	free(num);
 	if (!filename)
-	{
-		perror("malloc() fail\n");
-		return (-1);
-	}
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	free(filename);
-	if (fd < 0)
+		return (perror("malloc() fail\n"), NULL);
+	*fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (*fd < 0)
 	{
 		perror("heredoc file open() fail\n");
-		return (-1);
+		return (NULL);
 	}
-	return (fd);
+	return (filename);
 }
 
-int	here_doc(char *end)
+int	here_doc(char *end, char *filepath)
 {
-	int		fd;
+	int		fd_write;
+	int		fd_read;
 	char	*line;
 
-	fd = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
+	filepath = open_here_doc_file(&fd_write);
+	if (fd_write < 0)
 		return (ft_putstr_fd("open() fail\n", 2), -1);
+	if (!filepath)
+		return (-1);
 	while (1)
 	{
 		line = readline("> ");
@@ -52,10 +55,11 @@ int	here_doc(char *end)
 		if (ft_strncmp(line, end, ft_strlen(end)) == 0 &&
 				ft_strlen(line) == ft_strlen(end))
 			break ;
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
+		ft_putstr_fd(line, fd_write);
+		ft_putstr_fd("\n", fd_write);
 		free(line);
 	}
-	close(fd);
-	return (fd);
+	close(fd_write);
+	fd_read = open(filepath, O_RDONLY);
+	return (fd_read);
 }

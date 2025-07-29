@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/28 14:03:09 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 10:45:06 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_env
 typedef struct s_cmd
 {
 	char			**argv;
+	char			*filepath;
 	int				infile;
 	int				outfile;
 	struct s_cmd	*next;

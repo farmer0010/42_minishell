@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 00:56:05 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/07/28 13:43:37 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 10:40:23 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_token	*create_token(int type, t_quote_type q, char *val);
 int		append_token(t_token **head, t_token *token);
+t_token	*last_token(t_token *head);
 
 t_token	*create_token(int type, t_quote_type q, char *val)
 {
@@ -33,7 +34,19 @@ t_token	*create_token(int type, t_quote_type q, char *val)
 	return (token);
 }
 
-int append_token(t_token **head, t_token *token)
+t_token	*last_token(t_token *head)
+{
+	t_token	*cur;
+
+	if (!head)
+		return (NULL);
+	cur = head;
+	while (cur->next)
+		cur = cur->next;
+	return (cur);
+}
+
+int	append_token(t_token **head, t_token *token)
 {
 	t_token	*cur;
 
