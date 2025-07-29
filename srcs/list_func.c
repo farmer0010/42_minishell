@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 00:56:05 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/07/29 13:11:18 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:32:52 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	append_token(t_token **head, t_token *token)
 
 	if (!head || !token)
 	{
-		printf("list_func.c/append_token error\n");
+		ft_putstr_fd("list_func.c/append_token error\n", 2);
 		return (0);
 	}
 	if (!*head)

@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 13:12:15 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:31:14 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,16 @@ static char	*open_here_doc_file(int *fd)
 	if (*fd < 0)
 	{
 		perror("heredoc file open() fail\n");
+		free(filename);
 		return (NULL);
 	}
 	return (filename);
+}
+
+static void	write_newline_fd(char *line, int fd)
+{
+	ft_putstr_fd(line, fd);
+	ft_putstr_fd("\n", fd);
 }
 
 int	here_doc(char *end, char **filepath)
@@ -42,11 +49,9 @@ int	here_doc(char *end, char **filepath)
 	int		fd_read;
 	char	*line;
 
-	*filepath = open_here_doc_file(&fd_write);
-	if (fd_write < 0)
+	if (fd_write < 0 || !*filepath)
 		return (ft_putstr_fd("open() fail\n", 2), -1);
-	if (!filepath)
-		return (-1);
+	*filepath = open_here_doc_file(&fd_write);
 	while (1)
 	{
 		line = readline("> ");
@@ -54,12 +59,14 @@ int	here_doc(char *end, char **filepath)
 			break ;
 		if (ft_strncmp(line, end, ft_strlen(end)) == 0 && \
 				ft_strlen(line) == ft_strlen(end))
+		{
+			free(line);
 			break ;
-		ft_putstr_fd(line, fd_write);
-		ft_putstr_fd("\n", fd_write);
+		}
+		write_newline_fd(line, fd_write);
 		free(line);
 	}
 	close(fd_write);
-	fd_read = open(filepath, O_RDONLY);
+	fd_read = open(*filepath, O_RDONLY);
 	return (fd_read);
 }

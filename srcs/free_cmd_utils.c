@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 13:53:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/29 10:55:56 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:46:56 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	free_cmd_list(t_cmd *cmd_list)
 		next_cmd = current->next;
 		if (current->argv)
 			free_argv(current->argv);
-		if (current->infile != -1)
+		if (current->infile != -1 && current->infile > 2)
 			close(current->infile);
-		if (current->outfile != -1)
+		if (current->outfile != -1 && current->outfile > 2)
 			close(current->outfile);
 		if (current->filepath)
 		{
@@ -63,9 +63,9 @@ void	free_cmd_node(t_cmd *node)
 		return ;
 	if (node->argv)
 		free_argv(node->argv);
-	if (node->infile != -1)
+	if (node->infile != -1 && node->infile > 2)
 		close(node->infile);
-	if (node->outfile != -1)
+	if (node->outfile != -1 && node->outfile > 2)
 		close(node->outfile);
 	if (node->filepath)
 	{

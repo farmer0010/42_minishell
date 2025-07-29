@@ -6,45 +6,17 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 13:11:56 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:20:11 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*create_cmd_node(t_token *start, t_token *end);
 t_cmd	*get_cmd_list(t_token **head);
+t_cmd	*create_cmd_node(t_token *start, t_token *end);
 int		append_cmd(t_cmd **head, t_cmd *cmd);
 int		create_append_cmd(t_cmd **head, t_token *start, t_token *end);
 t_cmd	*create_init_cmd(t_token *start, t_token *end);
-
-t_cmd	*create_cmd_node(t_token *start, t_token *end)
-{
-	t_cmd	*cmd;
-	t_token	*cur;
-	int		i;
-
-	if (!start || !end)
-		return (NULL);
-	cmd = create_init_cmd(start, end);
-	if (!cmd)
-		return (NULL);
-	i = 0;
-	cur = start;
-	while (cur && cur != end->next)
-	{
-		if (is_redirect(cur->type))
-		{
-			cur = cur->next->next;
-			continue ;
-		}
-		if (set_argv_val(cmd, cur, i) < 0)
-			return (free_cmd_node(cmd), NULL);
-		i++;
-		cur = cur->next;
-	}
-	return (cmd);
-}
 
 t_cmd	*get_cmd_list(t_token **head)
 {
@@ -73,6 +45,34 @@ t_cmd	*get_cmd_list(t_token **head)
 			return (ft_free_cmd_list(head_cmd), NULL);
 	}
 	return (head_cmd);
+}
+
+t_cmd	*create_cmd_node(t_token *start, t_token *end)
+{
+	t_cmd	*cmd;
+	t_token	*cur;
+	int		i;
+
+	if (!start || !end)
+		return (NULL);
+	cmd = create_init_cmd(start, end);
+	if (!cmd)
+		return (NULL);
+	i = 0;
+	cur = start;
+	while (cur && cur != end->next)
+	{
+		if (is_redirect(cur->type))
+		{
+			cur = cur->next->next;
+			continue ;
+		}
+		if (set_argv_val(cmd, cur, i) < 0)
+			return (free_cmd_node(cmd), NULL);
+		i++;
+		cur = cur->next;
+	}
+	return (cmd);
 }
 
 int	append_cmd(t_cmd **head, t_cmd *cmd)

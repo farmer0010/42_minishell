@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:30:46 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 10:22:39 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 14:17:34 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ char	*process_expansion(const char *cur, char *expanded, int *env_len)
 		if (!expanded)
 			return (NULL);
 	}
-	return (expanded);
+	else
+		return (expanded);
 }

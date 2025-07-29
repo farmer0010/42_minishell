@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:37:01 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 13:13:00 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:47:00 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ int	get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, int *argv_len)
 		if (is_redirect(cur->type))
 		{
 			if (set_fd(cur, cmd) < 0)
-				return (invalid_fd(cmd->infile, cmd->outfile), ERR);
-			if (cmd->infile < 0 || cmd->outfile < 0)
 				return (invalid_fd(cmd->infile, cmd->outfile), ERR);
 			cur = cur->next->next;
 			continue ;
