@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:48:02 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/28 16:58:38 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:14:54 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_cmd	*get_cmd_info(t_token **head)
 	return (head_cmd);
 }
 
-void syntax_error(const char *token_value)
+void	syntax_error(const char *token_value)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(token_value, 2);
@@ -62,4 +62,3 @@ char	*get_env_name_len(const char *val, int *env_len)
 		return (NULL);
 	return (*env_len = i, env_name);
 }
-

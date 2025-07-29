@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/29 10:45:06 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:11:57 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef enum e_quote_type {
 typedef struct s_token {
 	t_token_type	type;
 	t_quote_type	quote_status;
-	char 			*val;
+	char			*val;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -206,18 +206,56 @@ void		run_child_processes(t_cmd *cmd_list, t_shell_data *data);
 /* make_fake_cmd.c */
 t_cmd		*make_fake_cmd(void);
 
-/* parse_utils.c */
+//cmd_list_func.c
+t_cmd		*create_cmd_node(t_token *start, t_token *end);
+t_cmd		*get_cmd_list(t_token **head);
+int			append_cmd(t_cmd **head, t_cmd *cmd);
+int			create_append_cmd(t_cmd **head, t_token *start, t_token *end);
+t_cmd		*create_init_cmd(t_token *start, t_token *end);
+
+//env_expansion.c
+char		*expand_str(const char *val);
+char		*end_expansion(char *expanded, char *cur);
+char		*append_pre_doller(char *expanded, const char *pos, const char \
+	*cur);
+char		*process_expansion(const char *cur, char *expanded, int *env_len);
+
+//lex_utils.c
 int			ft_isquote(char c);
 int			ft_isspace(char c);
 int			ft_isoper(char c);
+int			is_redirect(t_token_type type);
 
-/* parse_free_util.c */
-void		ft_free_lst(t_token **head);
+// lexing_handler.c
+int			handle_general(const char *cmd, int *i, t_state *s, t_token **head);
+int			handle_in_oper(const char *cmd, int *i, t_token **head);
+int			handle_s_quote(const char *cmd, int *i, t_state *s, t_token **head);
+int			handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head);
+int			handle_in_word(const char *cmd, int *i, t_state *s, t_token **head);
 
-/* list_func.c */
+// lexing.c
+void		get_token_info(const char *cmd, t_token **head);
+
+//list_func.c
 t_token		*create_token(int type, t_quote_type q, char *val);
 int			append_token(t_token **head, t_token *token);
+t_token		*last_token(t_token *head);
+t_cmd		*get_last_cmd(t_cmd *head);
 
+//parse_free_util.c
+void		ft_free_lst(t_token **head);
+void		invalid_fd(int infile_fd, int outfile_fd);
 
+//parse_util.c
+int			valid_syntax(t_token **head);
+int			get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, \
+	int *argv_len);
+int			set_argv_val(t_cmd *cmd, t_token *cur, int idx);
+int			set_fd(t_token *cur, t_cmd *cmd);
+
+//parsing.c
+void		syntax_error(const char *token_value);
+char		*get_env_name_len(const char *val, int *env_len);
+char		*expand_str(const char *val);
 
 #endif

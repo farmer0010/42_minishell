@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 11:18:58 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:11:56 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 t_cmd	*create_cmd_node(t_token *start, t_token *end);
 t_cmd	*get_cmd_list(t_token **head);
 int		append_cmd(t_cmd **head, t_cmd *cmd);
-t_cmd	*get_last_cmd(t_cmd *head);
 int		create_append_cmd(t_cmd **head, t_token *start, t_token *end);
+t_cmd	*create_init_cmd(t_token *start, t_token *end);
 
 t_cmd	*create_cmd_node(t_token *start, t_token *end)
 {
@@ -24,9 +24,9 @@ t_cmd	*create_cmd_node(t_token *start, t_token *end)
 	t_token	*cur;
 	int		i;
 
-	if (!start || !end || start == end)
+	if (!start || !end)
 		return (NULL);
-	cmd = create_init_cmd(start);
+	cmd = create_init_cmd(start, end);
 	if (!cmd)
 		return (NULL);
 	i = 0;
@@ -38,41 +38,38 @@ t_cmd	*create_cmd_node(t_token *start, t_token *end)
 			cur = cur->next->next;
 			continue ;
 		}
-		if (cur->quote_status == s_q)
-			cmd->argv[i] = ft_strdup(cur->val);
-		else
-			cmd->argv[i] = expand_str(cur->val);
+		if (set_argv_val(cmd, cur, i) < 0)
+			return (free_cmd_node(cmd), NULL);
 		i++;
 		cur = cur->next;
 	}
-	cmd->argv[i] = NULL;
 	return (cmd);
 }
 
 t_cmd	*get_cmd_list(t_token **head)
 {
-	t_token *cur;
-	t_token *block_start;
-	t_cmd *head_cmd;
+	t_token	*cur;
+	t_token	*start;
+	t_cmd	*head_cmd;
 
 	if (!head || !*head)
 		return (NULL);
 	cur = *head;
-	block_start = *head;
+	start = *head;
 	head_cmd = NULL;
 	while (cur)
 	{
 		if (cur->type == PIPE)
 		{
-			if (create_append_cmd(&head_cmd, block_start, cur) < 0)
+			if (create_append_cmd(&head_cmd, start, cur->prev) < 0)
 				return (ft_free_cmd_list(head_cmd), NULL);
-			block_start = cur->next;
+			start = cur->next;
 		}
 		cur = cur->next;
 	}
-	if (block_start)
+	if (start)
 	{
-		if (create_append_cmd(&head_cmd, block_start, last_token(*head)) < 0)
+		if (create_append_cmd(&head_cmd, start, last_token(start)) < 0)
 			return (ft_free_cmd_list(head_cmd), NULL);
 	}
 	return (head_cmd);
@@ -84,7 +81,7 @@ int	append_cmd(t_cmd **head, t_cmd *cmd)
 
 	if (!head || !cmd)
 	{
-		printf("list_func.c/append_cmd error\n");
+		ft_putstr_fd("list_func.c/append_cmd error\n", 2);
 		return (-1);
 	}
 	if (!*head)
@@ -97,18 +94,6 @@ int	append_cmd(t_cmd **head, t_cmd *cmd)
 		return (-1);
 	cur->next = cmd;
 	return (1);
-}
-
-t_cmd	*get_last_cmd(t_cmd *head)
-{
-	t_cmd	*cur;
-
-	if (!head)
-		return (NULL);
-	cur = head;
-	while (cur->next)
-		cur = cur->next;
-	return (cur);
 }
 
 int	create_append_cmd(t_cmd **head, t_token *start, t_token *end)
@@ -128,7 +113,7 @@ int	create_append_cmd(t_cmd **head, t_token *start, t_token *end)
 	return (1);
 }
 
-t_cmd	*create_init_cmd(t_token *start)
+t_cmd	*create_init_cmd(t_token *start, t_token *end)
 {
 	t_cmd	*new_cmd;
 	int		argv_len;
@@ -140,9 +125,10 @@ t_cmd	*create_init_cmd(t_token *start)
 		return (NULL);
 	new_cmd->infile = STDIN_FILENO;
 	new_cmd->outfile = STDOUT_FILENO;
-	if (get_argv_set_fd(new_cmd, start, &argv_len) < 0)
-		return (free(new_cmd), NULL);
-	new_cmd->argv = malloc(sizeof(char *) * (argv_len + 1));
+	if (get_argv_set_fd(new_cmd, start, end, &argv_len) < 0)
+		return (free_cmd_node(new_cmd), NULL);
+	new_cmd->argv = ft_calloc((argv_len + 1), sizeof(char *));
 	if (!new_cmd->argv)
 		return (free_cmd_node(new_cmd), NULL);
+	return (new_cmd);
 }

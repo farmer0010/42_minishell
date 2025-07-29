@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:13:13 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/28 11:19:32 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:15:46 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ int		handle_in_word(const char *cmd, int *i, t_state *s, t_token **head);
 int	handle_in_oper(const char *cmd, int *i, t_token **head)
 {
 	if (ft_isoper(cmd[*i]) == PIPE)
-		return (append_token(head,\
-			create_token(PIPE, not_q, ft_strdup("|"))),(*i)++, PIPE);
+		return (append_token(head, create_token(PIPE, not_q, \
+			ft_strdup("|"))), (*i)++, PIPE);
 	else if (ft_isoper(cmd[*i]) == REDIRECT_IN)
 	{
 		if (cmd[*i + 1] && ft_isoper(cmd[*i + 1]) == REDIRECT_IN)
-			return (append_token(head, create_token(HERE_DOC, not_q,\
+			return (append_token(head, create_token(HERE_DOC, not_q, \
 				ft_strdup("<<"))), *i += 2, HERE_DOC);
 		else
 			return (append_token(head, create_token(REDIRECT_IN, not_q, \
@@ -85,7 +85,7 @@ int	handle_s_quote(const char *cmd, int *i, t_state *s, t_token **head)
 		return (ft_putstr_fd("unclosed single quote!\n", 2), ERR);
 }
 
-int		handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
+int	handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
 {
 	int		end_i;
 	char	*val;
@@ -111,18 +111,18 @@ int		handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
 		return (ft_putstr_fd("unclosed double quote!\n", 2), ERR);
 }
 
-int		handle_in_word(const char *cmd, int *i, t_state *s, t_token **head)
+int	handle_in_word(const char *cmd, int *i, t_state *s, t_token **head)
 {
 	int		end_i;
 	char	*val;
 
 	end_i = *i;
-	while(cmd[end_i] && !ft_isspace(cmd[end_i]) &&\
+	while (cmd[end_i] && !ft_isspace(cmd[end_i]) && \
 		!ft_isoper(cmd[end_i]) && !ft_isquote(cmd[end_i]))
 		end_i++;
 	val = ft_substr(cmd, *i, end_i - *i);
 	if (val == NULL)
-			return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR), -1);
+		return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR), -1);
 	*i = end_i;
 	*s = s_in_general;
 	if (!append_token(head, create_token(WORD, not_q, val)))

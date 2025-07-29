@@ -6,13 +6,13 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/28 14:29:29 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:12:15 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	here_doc(char *end, char *filepath);
+int	here_doc(char *end, char **filepath);
 
 static char	*open_here_doc_file(int *fd)
 {
@@ -36,13 +36,13 @@ static char	*open_here_doc_file(int *fd)
 	return (filename);
 }
 
-int	here_doc(char *end, char *filepath)
+int	here_doc(char *end, char **filepath)
 {
 	int		fd_write;
 	int		fd_read;
 	char	*line;
 
-	filepath = open_here_doc_file(&fd_write);
+	*filepath = open_here_doc_file(&fd_write);
 	if (fd_write < 0)
 		return (ft_putstr_fd("open() fail\n", 2), -1);
 	if (!filepath)
@@ -52,7 +52,7 @@ int	here_doc(char *end, char *filepath)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strncmp(line, end, ft_strlen(end)) == 0 &&
+		if (ft_strncmp(line, end, ft_strlen(end)) == 0 && \
 				ft_strlen(line) == ft_strlen(end))
 			break ;
 		ft_putstr_fd(line, fd_write);

@@ -6,18 +6,18 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:54:14 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/28 11:37:45 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 13:16:22 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_isquote(char c);
-int		ft_isspace(char c);
-int		ft_isoper(char c);
-int		is_redirect(t_token_type type);
+int	ft_isquote(char c);
+int	ft_isspace(char c);
+int	ft_isoper(char c);
+int	is_redirect(t_token_type type);
 
-int		ft_isspace(char c)
+int	ft_isspace(char c)
 {
 	if (c == ' ' || c > 9 && c < 14)
 		return (1);
