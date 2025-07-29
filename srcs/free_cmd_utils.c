@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   free_cmd_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
+/*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 13:53:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/21 13:53:31 by juyoukim         ###   ########.fr       */
+/*   Updated: 2025/07/29 10:55:56 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_argv(char **argv);
+void	free_cmd_list(t_cmd *cmd_list);
+void	free_cmd_node(t_cmd *node);
+void	free_token_list(t_token *token_list);
 
 void	free_argv(char **argv)
 {
@@ -42,9 +47,32 @@ void	free_cmd_list(t_cmd *cmd_list)
 			close(current->infile);
 		if (current->outfile != -1)
 			close(current->outfile);
+		if (current->filepath)
+		{
+			unlink(current->filepath);
+			free(current->filepath);
+		}
 		free(current);
 		current = next_cmd;
 	}
+}
+
+void	free_cmd_node(t_cmd *node)
+{
+	if (!node)
+		return ;
+	if (node->argv)
+		free_argv(node->argv);
+	if (node->infile != -1)
+		close(node->infile);
+	if (node->outfile != -1)
+		close(node->outfile);
+	if (node->filepath)
+	{
+		unlink(node->filepath);
+		free(node->filepath);
+	}
+	free(node);
 }
 
 void	free_token_list(t_token *token_list)
