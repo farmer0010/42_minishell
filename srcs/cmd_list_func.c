@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 10:55:59 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:18:58 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,13 @@ t_cmd	*create_cmd_node(t_token *start, t_token *end)
 {
 	t_cmd	*cmd;
 	t_token	*cur;
-	int		argv_len;
 	int		i;
 
-	if (!start)
+	if (!start || !end || start == end)
 		return (NULL);
-	cmd = ft_calloc(1, sizeof(t_cmd));
+	cmd = create_init_cmd(start);
 	if (!cmd)
 		return (NULL);
-	cmd->infile = STDIN_FILENO;
-	cmd->outfile = STDOUT_FILENO;
-	if (get_argv_set_fd(cmd, start, &argv_len) < 0)
-		return (free(cmd), NULL);
-	cur = start;
-	cmd->argv = malloc(sizeof(char *) * (argv_len + 1));
-	if (!cmd->argv)
-	{
-		if (cmd->infile != STDIN_FILENO && cmd->infile != -1)
-			close(cmd->infile);
-		if (cmd->outfile != STDOUT_FILENO && cmd->outfile != -1)
-			close(cmd->outfile);
-		return (free(cmd), NULL);
-	}
 	i = 0;
 	cur = start;
 	while (cur && cur != end->next)
@@ -143,4 +128,21 @@ int	create_append_cmd(t_cmd **head, t_token *start, t_token *end)
 	return (1);
 }
 
-t_cmd	*create_init_cmd(){}
+t_cmd	*create_init_cmd(t_token *start)
+{
+	t_cmd	*new_cmd;
+	int		argv_len;
+
+	if (!start)
+		return (NULL);
+	new_cmd = ft_calloc(1, sizeof(t_cmd));
+	if (!new_cmd)
+		return (NULL);
+	new_cmd->infile = STDIN_FILENO;
+	new_cmd->outfile = STDOUT_FILENO;
+	if (get_argv_set_fd(new_cmd, start, &argv_len) < 0)
+		return (free(new_cmd), NULL);
+	new_cmd->argv = malloc(sizeof(char *) * (argv_len + 1));
+	if (!new_cmd->argv)
+		return (free_cmd_node(new_cmd), NULL);
+}
