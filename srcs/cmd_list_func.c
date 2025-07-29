@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 10:34:48 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/29 10:55:59 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_cmd	*get_cmd_list(t_token **head)
 	}
 	if (block_start)
 	{
-		if (create_append_cmd(&head_cmd, block_start, cur) < 0)
+		if (create_append_cmd(&head_cmd, block_start, last_token(*head)) < 0)
 			return (ft_free_cmd_list(head_cmd), NULL);
 	}
 	return (head_cmd);
@@ -130,15 +130,17 @@ int	create_append_cmd(t_cmd **head, t_token *start, t_token *end)
 {
 	t_cmd	*new_cmd;
 
-	if (!head || !start || !end)
+	if (!head || !start)
 		return (-1);
 	new_cmd = create_cmd_node(start, end);
 	if (!new_cmd)
 		return (perror("malloc failed in create_append_cmd()\n"), -1);
 	if (append_cmd(head, new_cmd) < 0)
 	{
-		ft_free_cmd_list(*head);
+		free_cmd_node(new_cmd);
 		return (-1);
 	}
 	return (1);
 }
+
+t_cmd	*create_init_cmd(){}
