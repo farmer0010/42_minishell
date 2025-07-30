@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 11:09:28 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 13:02:28 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:01:36 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	print_token_lst(t_token *head)
 			printf("token type : WORD\n");
 		if (cur->quote_status == not_q)
 			printf("quote state : no quote\n");
-		else if (cur->quote_status == not_q)
+		else if (cur->quote_status == s_q)
 			printf("quote state : single quote\n");
-		else if (cur->quote_status == not_q)
+		else if (cur->quote_status == d_q)
 			printf("quote state : double quote\n");
 		printf("token value : %s\n", cur->val);
 		printf("---------------------------------------------------\n");

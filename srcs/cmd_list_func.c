@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 12:25:37 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:03:29 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ t_cmd	*create_init_cmd(t_token *start, t_token *end)
 
 	if (!start)
 		return (NULL);
+	argv_len = 0;
 	new_cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!new_cmd)
 		return (NULL);

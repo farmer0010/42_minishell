@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 12:21:20 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:59:16 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	here_doc(char *end, char **filepath)
 	int		fd_read;
 	char	*line;
 
+	*filepath = open_here_doc_file(&fd_write);
 	if (!*filepath)
 		return (ft_putstr_fd("open() fail\n", 2), -1);
-	*filepath = open_here_doc_file(&fd_write);
 	while (1)
 	{
 		line = readline("> ");

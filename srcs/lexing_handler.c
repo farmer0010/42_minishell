@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:13:13 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 12:21:40 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:00:45 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
 	{
 		val = ft_substr(cmd, *i, end_i - *i);
 		if (val == NULL)
-			return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR), -1);
+			return (ft_putstr_fd("handle_func/ft_substr() error\n", 2), -1);
 		*i = end_i + 1;
 		*s = s_in_general;
 		if (!append_token(head, create_token(WORD, d_q, val)))
@@ -123,7 +123,7 @@ int	handle_in_word(const char *cmd, int *i, t_state *s, t_token **head)
 		end_i++;
 	val = ft_substr(cmd, *i, end_i - *i);
 	if (val == NULL)
-		return (ft_putstr_fd("handle_func/ft_substr() error\n", ERR), -1);
+		return (ft_putstr_fd("handle_func/ft_substr() error\n", 2), -1);
 	*i = end_i;
 	*s = s_in_general;
 	if (!append_token(head, create_token(WORD, not_q, val)))
