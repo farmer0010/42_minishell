@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/30 12:24:59 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:35:54 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int			ft_strcmp(const char *s1, const char *s2);
 int			is_numeric(const char *str);
 char		*ft_strjoin_free(char *s1, char *s2);
 long long	ft_atoll(const char *str);
+int			ft_isspace(char c);
 
 /* free_utils.c */
 void		free_argv(char **argv);
