@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:37:01 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 13:47:00 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:53:37 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		valid_syntax(t_token **head);
 int		get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, \
 	int *argv_len);
-int		set_argv_val(t_cmd *cmd, t_token *cur, int idx);
+int		set_argv_val(t_cmd *cmd, t_token *cur, int idx, t_shell_data *data);
 int		set_fd(t_token *cur, t_cmd *cmd);
 
 int	valid_syntax(t_token **head)
@@ -68,14 +68,14 @@ int	get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, int *argv_len)
 	return (1);
 }
 
-int	set_argv_val(t_cmd *cmd, t_token *cur, int idx)
+int	set_argv_val(t_cmd *cmd, t_token *cur, int idx, t_shell_data *data)
 {
 	if (!cmd || !cur)
 		return (-1);
 	if (cur->quote_status == s_q)
 		cmd->argv[idx] = ft_strdup(cur->val);
 	else
-		cmd->argv[idx] = expand_str(cur->val);
+		cmd->argv[idx] = expand_str(cur->val, data);
 	if (!cmd->argv[idx])
 	{
 		free_cmd_node(cmd);

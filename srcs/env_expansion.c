@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:30:46 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 11:03:58 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:41:36 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 char	*expand_str(const char *val, t_shell_data *data);
 char	*end_expansion(char *expanded, char *cur);
 char	*append_pre_doller(char *expanded, const char *pos, const char *cur);
-char	*process_expansion(const char *cur, char *expanded, int *env_len, t_shell_data *data);
+char	*process_expansion(const char *cur, char *expanded, int *env_len, \
+	t_shell_data *data);
 
 char	*expand_str(const char *val, t_shell_data *data)
 {

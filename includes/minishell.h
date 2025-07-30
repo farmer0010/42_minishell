@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/30 11:35:04 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:06:09 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,20 +216,20 @@ void		child_process(t_cmd *cmd, t_shell_data *data);
 void		run_child_processes(t_cmd *cmd_list, t_shell_data *data);
 
 /* cmd_list_func.c */
-t_cmd		*create_cmd_node(t_token *start, t_token *end);
-t_cmd		*get_cmd_list(t_token **head);
+t_cmd		*create_cmd_node(t_token *start, t_token *end, t_shell_data *data);
+t_cmd		*get_cmd_list(t_token **head, t_shell_data *data);
 int			append_cmd(t_cmd **head, t_cmd *cmd);
 int			create_append_cmd(t_cmd **head,
-				t_token *start, t_token *end);
+				t_token *start, t_token *end, t_shell_data *data);
 t_cmd		*create_init_cmd(t_token *start, t_token *end);
 
 /* env_expansion.c */
-char		*expand_str(const char *val);
+char		*expand_str(const char *val, t_shell_data *data);
 char		*end_expansion(char *expanded, char *cur);
 char		*append_pre_doller(char *expanded,
 				const char *pos, const char *cur);
 char		*process_expansion(const char *cur,
-				char *expanded, int *env_len);
+				char *expanded, int *env_len, t_shell_data *data);
 
 /* lex_utils.c */
 int			ft_isquote(char c);
@@ -266,12 +266,13 @@ void		invalid_fd(int infile_fd, int outfile_fd);
 int			valid_syntax(t_token **head);
 int			get_argv_set_fd(t_cmd *cmd, t_token *start,
 				t_token *end, int *argv_len);
-int			set_argv_val(t_cmd *cmd, t_token *cur, int idx);
+int			set_argv_val(t_cmd *cmd, t_token *cur, int idx, \
+	t_shell_data *data);
 int			set_fd(t_token *cur, t_cmd *cmd);
 
 /* parsing.c */
 void		syntax_error(const char *token_value);
 char		*get_env_name_len(const char *val, int *env_len);
-char		*expand_str(const char *val);
+t_cmd		*get_cmd_info(t_token **head, t_shell_data *data);
 
 #endif

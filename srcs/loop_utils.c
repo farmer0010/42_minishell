@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
+/*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 10:16:18 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/30 10:16:19 by juyoukim         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:05:38 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	perform_lexing(t_shell_data *data, char *input)
 
 int	perform_parsing(t_shell_data *data)
 {
-	data->cmd_list = get_cmd_info(&(data->token_list));
+	data->cmd_list = get_cmd_info(&(data->token_list), data);
 	data->token_list = NULL;
 	if (!data->cmd_list)
 		return (0);
