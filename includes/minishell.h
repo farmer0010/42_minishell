@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/29 14:07:11 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:08:56 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,7 @@ int			set_argv_val(t_cmd *cmd, t_token *cur, int idx);
 int			set_fd(t_token *cur, t_cmd *cmd);
 
 //parsing.c
+t_cmd		*parse_cmd_line(const char *cmd);
 void		syntax_error(const char *token_value);
 char		*get_env_name_len(const char *val, int *env_len);
 char		*expand_str(const char *val);

@@ -6,18 +6,18 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:30:46 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 14:17:34 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:03:58 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_str(const char *val);
+char	*expand_str(const char *val, t_shell_data *data);
 char	*end_expansion(char *expanded, char *cur);
 char	*append_pre_doller(char *expanded, const char *pos, const char *cur);
-char	*process_expansion(const char *cur, char *expanded, int *env_len);
+char	*process_expansion(const char *cur, char *expanded, int *env_len, t_shell_data *data);
 
-char	*expand_str(const char *val)
+char	*expand_str(const char *val, t_shell_data *data)
 {
 	char	*expanded;
 	char	*cur;
@@ -39,7 +39,7 @@ char	*expand_str(const char *val)
 		if (doller_pos > cur)
 			expanded = append_pre_doller(expanded, doller_pos, cur);
 		cur = doller_pos + 1;
-		expanded = process_expansion(cur, expanded, &env_len);
+		expanded = process_expansion(cur, expanded, &env_len, data);
 		cur += env_len;
 	}
 	return (expanded);
@@ -68,7 +68,8 @@ char	*append_pre_doller(char *expanded, const char *pos, const char *cur)
 	return (expanded);
 }
 
-char	*process_expansion(const char *cur, char *expanded, int *env_len)
+char	*process_expansion(const char *cur, char *expanded, int *env_len, \
+	t_shell_data *data)
 {
 	char	*env_name;
 	char	*env_value;
@@ -81,7 +82,7 @@ char	*process_expansion(const char *cur, char *expanded, int *env_len)
 	if (env_name[0] == '?')
 		env_value = ft_itoa(g_exit_status);
 	else
-		env_value = ft_strdup(getenv(env_name));
+		env_value = ft_strdup(get_env_value(data->env_list, env_name));
 	free(env_name);
 	if (env_value)
 	{
