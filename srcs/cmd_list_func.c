@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 11:59:48 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:25:37 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_cmd	*get_cmd_list(t_token **head, t_shell_data *data)
 		if (cur->type == PIPE)
 		{
 			if (create_append_cmd(&head_cmd, start, cur->prev, data) < 0)
-				return (ft_free_cmd_list(head_cmd), NULL);
+				return (free_cmd_list(head_cmd), NULL);
 			start = cur->next;
 		}
 		cur = cur->next;
@@ -43,7 +43,7 @@ t_cmd	*get_cmd_list(t_token **head, t_shell_data *data)
 	if (start)
 	{
 		if (create_append_cmd(&head_cmd, start, last_token(start), data) < 0)
-			return (ft_free_cmd_list(head_cmd), NULL);
+			return (free_cmd_list(head_cmd), NULL);
 	}
 	return (head_cmd);
 }

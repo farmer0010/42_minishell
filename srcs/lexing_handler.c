@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:13:13 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 13:52:24 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:21:40 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	handle_in_oper(const char *cmd, int *i, t_token **head)
 			return (append_token(head, create_token(REDIRECT_OUT, not_q, \
 				ft_strdup(">"))), (*i)++, REDIRECT_OUT);
 	}
+	return (1);
 }
 
 int	handle_general(const char *cmd, int *i, t_state *s, t_token **head)

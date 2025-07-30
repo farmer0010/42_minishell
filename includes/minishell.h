@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/30 12:06:09 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 12:24:59 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ long long	ft_atoll(const char *str);
 void		free_argv(char **argv);
 void		free_cmd_list(t_cmd *cmd_list);
 void		free_token_list(t_token *token_list);
+void		free_cmd_node(t_cmd *node);
 void		free_env_node(void *content);
 void		free_pipes(int **pipefd, int count);
 void		free_env_array(char **env_array);
@@ -233,7 +234,6 @@ char		*process_expansion(const char *cur,
 
 /* lex_utils.c */
 int			ft_isquote(char c);
-int			ft_isspace(char c);
 int			ft_isoper(char c);
 int			is_redirect(t_token_type type);
 
@@ -274,5 +274,8 @@ int			set_fd(t_token *cur, t_cmd *cmd);
 void		syntax_error(const char *token_value);
 char		*get_env_name_len(const char *val, int *env_len);
 t_cmd		*get_cmd_info(t_token **head, t_shell_data *data);
+
+//here_doc.c
+int			here_doc(char *end, char **filepath);
 
 #endif
