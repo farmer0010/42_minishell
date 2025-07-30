@@ -12,18 +12,47 @@
 
 #include "minishell.h"
 
-void	execute_cmds(t_shell_data *data)
+int	handle_single_external_cmd(t_shell_data *data)
 {
-	t_cmd	*cmd_list;
+	pid_t	pid;
+	int		status;
 
-	cmd_list = data->cmd_list;
-	if (!cmd_list || !cmd_list->argv || !cmd_list->argv[0])
+	pid = fork();
+	if (pid == -1)
 	{
-		g_exit_status = 0;
-		return ;
+		perror("minishell: fork");
+		return (g_exit_status = EXIT_FAILURE);
 	}
-	if (!cmd_list->next && is_builtin(cmd_list->argv[0]))
-		handle_single_builtin(cmd_list, data);
+	if (pid == 0)
+	{
+		child_process(data->cmd_list, data);
+	}
+	if (waitpid(pid, &status, 0) == -1)
+	{
+		perror("minishell: waitpid");
+		return (g_exit_status = EXIT_FAILURE);
+	}
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+	return (g_exit_status);
+}
+
+int	execute_cmds(t_shell_data *data)
+{
+	int	num_cmds;
+
+	if (!data->cmd_list)
+		return (0);
+	num_cmds = count_commands(data->cmd_list);
+	if (num_cmds == 1)
+	{
+		if (is_builtin(data->cmd_list->argv[0]))
+			return (handle_single_builtin(data->cmd_list, data));
+		else
+			return (handle_single_external_cmd(data));
+	}
 	else
-		handle_multiple_cmds(data, cmd_list);
+		return (handle_multiple_cmds(data, data->cmd_list));
 }

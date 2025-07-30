@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	count_commands(t_cmd *cmd)
+int	count_commands(t_cmd *cmd)
 {
 	int	count;
 
@@ -42,7 +42,7 @@ static void	wait_all_children(int count)
 	}
 }
 
-void	handle_multiple_cmds(t_shell_data *data, t_cmd *cmd_list)
+int	handle_multiple_cmds(t_shell_data *data, t_cmd *cmd_list)
 {
 	int	num_cmds;
 
@@ -54,11 +54,12 @@ void	handle_multiple_cmds(t_shell_data *data, t_cmd *cmd_list)
 	{
 		perror("minishell: failed to create pipes");
 		g_exit_status = 1;
-		return ;
+		return (g_exit_status);
 	}
 	run_child_processes(cmd_list, data);
 	close_unused_pipes(data->pipe_data.pipefd, num_cmds - 1);
 	free_pipes(data->pipe_data.pipefd, num_cmds - 1);
 	data->pipe_data.pipefd = NULL;
 	wait_all_children(num_cmds);
+	return (g_exit_status);
 }

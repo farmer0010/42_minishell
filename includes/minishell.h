@@ -118,8 +118,9 @@ int			perform_parsing(t_shell_data *data);
 void		cleanup_cmd_data(t_shell_data *data);
 
 /* execute_cmds.c */
-void		execute_cmds(t_shell_data *data);
-void		handle_multiple_cmds(t_shell_data *data, t_cmd *cmd_list);
+int			execute_cmds(t_shell_data *data);
+int			handle_multiple_cmds(t_shell_data *data, t_cmd *cmd_list);
+int			count_commands(t_cmd *cmd);
 
 /* execute_cmds_utils.c */
 char		*find_executable(char *cmd_name, t_list *env_list);
@@ -179,7 +180,7 @@ int			is_valid_identifier(const char *str);
 void		handle_export_key_value(t_list **env_list, char *key, char *value);
 
 /* builtin_handler.c */
-void		handle_single_builtin(t_cmd *cmd, t_shell_data *data);
+int			handle_single_builtin(t_cmd *cmd, t_shell_data *data);
 
 /* builtin_single.c */
 int			is_single_builtin(t_cmd *cmd);
