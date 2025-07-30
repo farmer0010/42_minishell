@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop.c                                             :+:      :+:    :+:   */
+/*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/17 11:09:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/17 11:09:36 by juyoukim         ###   ########.fr       */
+/*   Created: 2025/07/30 09:51:24 by juyoukim          #+#    #+#             */
+/*   Updated: 2025/07/30 09:51:26 by juyoukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	start_minishell(t_shell_data *data)
+void	print_init_error(void)
 {
-	char	*input;
+	perror("minishell: Failed to initialize environment");
+}
 
-	while (TRUE)
-	{
-		init_signal();
-		input = read_user_input();
-		if (!input)
-		{
-			write(1, "exit\n", 5);
-			break ;
-		}
-		if (!perform_lexing(data, input))
-			continue ;
-		if (!perform_parsing(data))
-			continue ;
-		execute_cmds(data);
-		cleanup_cmd_data(data);
-	}
+int	init_shell_data(t_shell_data *data, char **envp)
+{
+	ft_memset(data, 0, sizeof(t_shell_data));
+	data->stdin_backup = -1;
+	data->stdout_backup = -1;
+	data->env_list = init_env_list(envp);
+	if (!data->env_list)
+		return (0);
+	return (1);
 }

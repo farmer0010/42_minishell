@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 11:09:28 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 11:26:12 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 11:38:53 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,4 @@ void	print_token_lst(t_token *head)
 		cur = cur->next;
 	}
 	printf("---------------------------------------------------\n");
-}
-
-void	print_argv(char **ag)
-{
-	int i = 0;
-	while(){}
-}
-
-void	print_cmd_lst(t_cmd *head)
-{
-
 }
