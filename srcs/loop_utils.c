@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 10:16:18 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/30 12:05:38 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:01:21 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	perform_lexing(t_shell_data *data, char *input)
 {
 	data->token_list = NULL;
 	get_token_info(input, &(data->token_list));
+	print_token_lst(data->token_list);
 	free(input);
 	if (!data->token_list)
 		return (0);
@@ -35,6 +36,7 @@ int	perform_lexing(t_shell_data *data, char *input)
 int	perform_parsing(t_shell_data *data)
 {
 	data->cmd_list = get_cmd_info(&(data->token_list), data);
+	print_cmd_lst(data->cmd_list);
 	data->token_list = NULL;
 	if (!data->cmd_list)
 		return (0);

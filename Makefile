@@ -6,7 +6,7 @@
 #    By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 13:39:56 by taewonki          #+#    #+#              #
-#    Updated: 2025/07/16 13:49:01 by taewonki         ###   ########.fr        #
+#    Updated: 2025/07/30 12:39:51 by taewonki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ all: libft $(NAME)
 # Libft를 먼저 빌드하는 타겟
 libft:
 	@echo "$(GREEN)Building Libft...$(NC)"
-	@make -C $(LIBFT_DIR) all
+	@make -C $(LIBFT_DIR) bonus
 	@echo "$(GREEN)Libft built successfully!$(NC)"
 
 # 메인 실행 파일 빌드

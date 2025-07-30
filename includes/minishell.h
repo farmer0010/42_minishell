@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/30 12:35:54 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:00:05 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,5 +278,9 @@ t_cmd		*get_cmd_info(t_token **head, t_shell_data *data);
 
 //here_doc.c
 int			here_doc(char *end, char **filepath);
+
+//debug_parse.c
+void	print_token_lst(t_token *head);
+void	print_cmd_lst(t_cmd *head);
 
 #endif

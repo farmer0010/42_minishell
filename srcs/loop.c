@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
+/*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:09:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/17 11:09:36 by juyoukim         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:08:21 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,14 @@ void	start_minishell(t_shell_data *data)
 			write(1, "exit\n", 5);
 			break ;
 		}
-		if (!perform_lexing(data, input))
+		if (!perform_lexing(data, input)){
+			print_token_lst(data->token_list);
 			continue ;
-		if (!perform_parsing(data))
+		}
+		if (!perform_parsing(data)){
+			print_cmd_lst(data->cmd_list);
 			continue ;
+		}
 		execute_cmds(data);
 		cleanup_cmd_data(data);
 	}
