@@ -5,7 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Created: 2025/07/02 10:07:23 by juyoukim          #+#    #+#             */
 /*   Updated: 2025/07/29 14:07:11 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -61,7 +61,8 @@ typedef enum e_state
 	s_in_word
 }	t_state;
 
-typedef enum e_token_type {
+typedef enum e_token_type
+{
 	WORD,
 	PIPE,
 	REDIRECT_IN,
@@ -70,13 +71,15 @@ typedef enum e_token_type {
 	REDIRECT_APPEND
 }	t_token_type;
 
-typedef enum e_quote_type {
+typedef enum e_quote_type
+{
 	not_q,
 	s_q,
 	d_q
 }	t_quote_type;
 
-typedef struct s_token {
+typedef struct s_token
+{
 	t_token_type	type;
 	t_quote_type	quote_status;
 	char			*val;
@@ -86,9 +89,9 @@ typedef struct s_token {
 
 typedef struct s_pipe_data
 {
-	int		idx;
-	int		count;
-	int		**pipefd;
+	int	idx;
+	int	count;
+	int	**pipefd;
 }	t_pipe_data;
 
 typedef struct s_shell_data
@@ -101,8 +104,18 @@ typedef struct s_shell_data
 	int			stdout_backup;
 }	t_shell_data;
 
+/* init_data.c */
+int			init_shell_data(t_shell_data *data, char **envp);
+void		print_init_error(void);
+
 /* loop.c */
 void		start_minishell(t_shell_data *data);
+
+/* loop_utils.c */
+char		*read_user_input(void);
+int			perform_lexing(t_shell_data *data, char *input);
+int			perform_parsing(t_shell_data *data);
+void		cleanup_cmd_data(t_shell_data *data);
 
 /* execute_cmds.c */
 void		execute_cmds(t_shell_data *data);
@@ -118,8 +131,8 @@ int			handle_redirects(t_cmd *cmd);
 /* libft_plus_utils.c */
 int			ft_strcmp(const char *s1, const char *s2);
 int			is_numeric(const char *str);
-long long	ft_atoll(const char *str);
 char		*ft_strjoin_free(char *s1, char *s2);
+long long	ft_atoll(const char *str);
 
 /* free_utils.c */
 void		free_argv(char **argv);
@@ -161,8 +174,7 @@ void		handle_export_no_value(t_list **env_list, const char *arg);
 
 /* builtin_validation.c */
 int			is_valid_identifier(const char *str);
-void		handle_export_key_value(t_list **env_list,
-				char *key, char *value);
+void		handle_export_key_value(t_list **env_list, char *key, char *value);
 
 /* builtin_handler.c */
 void		handle_single_builtin(t_cmd *cmd, t_shell_data *data);
@@ -203,57 +215,61 @@ void		child_process(t_cmd *cmd, t_shell_data *data);
 /* process_manager.c */
 void		run_child_processes(t_cmd *cmd_list, t_shell_data *data);
 
-/* make_fake_cmd.c */
-t_cmd		*make_fake_cmd(void);
-
-//cmd_list_func.c
+/* cmd_list_func.c */
 t_cmd		*create_cmd_node(t_token *start, t_token *end);
 t_cmd		*get_cmd_list(t_token **head);
 int			append_cmd(t_cmd **head, t_cmd *cmd);
-int			create_append_cmd(t_cmd **head, t_token *start, t_token *end);
+int			create_append_cmd(t_cmd **head,
+				t_token *start, t_token *end);
 t_cmd		*create_init_cmd(t_token *start, t_token *end);
 
-//env_expansion.c
+/* env_expansion.c */
 char		*expand_str(const char *val);
 char		*end_expansion(char *expanded, char *cur);
-char		*append_pre_doller(char *expanded, const char *pos, const char \
-	*cur);
-char		*process_expansion(const char *cur, char *expanded, int *env_len);
+char		*append_pre_doller(char *expanded,
+				const char *pos, const char *cur);
+char		*process_expansion(const char *cur,
+				char *expanded, int *env_len);
 
-//lex_utils.c
+/* lex_utils.c */
 int			ft_isquote(char c);
 int			ft_isspace(char c);
 int			ft_isoper(char c);
 int			is_redirect(t_token_type type);
 
-// lexing_handler.c
-int			handle_general(const char *cmd, int *i, t_state *s, t_token **head);
-int			handle_in_oper(const char *cmd, int *i, t_token **head);
-int			handle_s_quote(const char *cmd, int *i, t_state *s, t_token **head);
-int			handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head);
-int			handle_in_word(const char *cmd, int *i, t_state *s, t_token **head);
+/* lexing_handler.c */
+int			handle_general(const char *cmd, int *i,
+				t_state *s, t_token **head);
+int			handle_in_oper(const char *cmd, int *i,
+				t_token **head);
+int			handle_s_quote(const char *cmd, int *i,
+				t_state *s, t_token **head);
+int			handle_d_quote(const char *cmd, int *i,
+				t_state *s, t_token **head);
+int			handle_in_word(const char *cmd, int *i,
+				t_state *s, t_token **head);
 
-// lexing.c
+/* lexing.c */
 void		get_token_info(const char *cmd, t_token **head);
 
-//list_func.c
+/* list_func.c */
 t_token		*create_token(int type, t_quote_type q, char *val);
 int			append_token(t_token **head, t_token *token);
 t_token		*last_token(t_token *head);
 t_cmd		*get_last_cmd(t_cmd *head);
 
-//parse_free_util.c
+/* parse_free_util.c */
 void		ft_free_lst(t_token **head);
 void		invalid_fd(int infile_fd, int outfile_fd);
 
-//parse_util.c
+/* parse_util.c */
 int			valid_syntax(t_token **head);
-int			get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, \
-	int *argv_len);
+int			get_argv_set_fd(t_cmd *cmd, t_token *start,
+				t_token *end, int *argv_len);
 int			set_argv_val(t_cmd *cmd, t_token *cur, int idx);
 int			set_fd(t_token *cur, t_cmd *cmd);
 
-//parsing.c
+/* parsing.c */
 void		syntax_error(const char *token_value);
 char		*get_env_name_len(const char *val, int *env_len);
 char		*expand_str(const char *val);
