@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:13:13 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 14:00:45 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/31 12:23:47 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	handle_s_quote(const char *cmd, int *i, t_state *s, t_token **head)
 		return (1);
 	}
 	else
-		return (ft_putstr_fd("unclosed single quote!\n", 2), ERR);
+		return (ft_putstr_fd("minishell:single quote is unclosed\n", 2), ERR);
 }
 
 int	handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
@@ -109,7 +109,7 @@ int	handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
 		return (1);
 	}
 	else
-		return (ft_putstr_fd("unclosed double quote!\n", 2), ERR);
+		return (ft_putstr_fd("minishell:double quote is unclosed\n", 2), ERR);
 }
 
 int	handle_in_word(const char *cmd, int *i, t_state *s, t_token **head)
