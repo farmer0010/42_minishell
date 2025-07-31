@@ -14,7 +14,7 @@
 
 int	handle_redirects(t_cmd *cmd)
 {
-	if (cmd->infile != -1)
+	if (cmd->infile != -1 && cmd->infile != STDIN_FILENO)
 	{
 		if (dup2(cmd->infile, STDIN_FILENO) == -1)
 		{
@@ -24,7 +24,7 @@ int	handle_redirects(t_cmd *cmd)
 		}
 		close(cmd->infile);
 	}
-	if (cmd->outfile != -1)
+	if (cmd->outfile != -1 && cmd->outfile != STDOUT_FILENO)
 	{
 		if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
 		{

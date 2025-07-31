@@ -46,6 +46,8 @@ int	execute_cmds(t_shell_data *data)
 	if (!data->cmd_list)
 		return (0);
 	num_cmds = count_commands(data->cmd_list);
+	data->pipe_data.pipefd = NULL;
+	data->pipe_data.count = num_cmds;
 	if (num_cmds == 1)
 	{
 		if (is_builtin(data->cmd_list->argv[0]))

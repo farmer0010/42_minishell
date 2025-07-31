@@ -26,7 +26,6 @@ int	perform_lexing(t_shell_data *data, char *input)
 {
 	data->token_list = NULL;
 	get_token_info(input, &(data->token_list));
-	print_token_lst(data->token_list);
 	free(input);
 	if (!data->token_list)
 		return (0);
@@ -36,9 +35,8 @@ int	perform_lexing(t_shell_data *data, char *input)
 int	perform_parsing(t_shell_data *data)
 {
 	data->cmd_list = get_cmd_info(&(data->token_list), data);
-	print_cmd_lst(data->cmd_list);
 	data->token_list = NULL;
-	if (!data->cmd_list)
+	if (! data->cmd_list)
 		return (0);
 	return (1);
 }

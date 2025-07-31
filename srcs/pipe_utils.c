@@ -40,6 +40,8 @@ int	**create_pipes(int count)
 
 void	setup_pipes(int idx, int count, int **pipefd)
 {
+	if (! pipefd || ! *pipefd)
+		return ;
 	if (idx > 0)
 	{
 		if (dup2(pipefd[idx - 1][0], STDIN_FILENO) == -1)
