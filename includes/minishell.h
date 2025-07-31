@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/07/30 17:45:30 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/31 11:49:29 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,7 @@ t_cmd		*get_last_cmd(t_cmd *head);
 
 /* parse_free_util.c */
 void		ft_free_lst(t_token **head);
-void		invalid_fd(int infile_fd, int outfile_fd);
+void		invalid_fd(t_cmd *cmd);
 
 /* parse_util.c */
 int			valid_syntax(t_token **head);
