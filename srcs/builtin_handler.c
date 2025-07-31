@@ -20,7 +20,7 @@ static void	restore_std_fds(t_shell_data *data)
 	close(data->stdout_backup);
 }
 
-void	handle_single_builtin(t_cmd *cmd, t_shell_data *data)
+int	handle_single_builtin(t_cmd *cmd, t_shell_data *data)
 {
 	data->stdin_backup = dup(STDIN_FILENO);
 	data->stdout_backup = dup(STDOUT_FILENO);
@@ -32,14 +32,15 @@ void	handle_single_builtin(t_cmd *cmd, t_shell_data *data)
 		if (data->stdout_backup != -1)
 			close(data->stdout_backup);
 		g_exit_status = 1;
-		return ;
+		return (g_exit_status);
 	}
 	if (handle_redirects(cmd))
 	{
 		g_exit_status = 1;
 		restore_std_fds(data);
-		return ;
+		return (g_exit_status);
 	}
 	g_exit_status = exec_builtin(cmd, data);
 	restore_std_fds(data);
+	return (g_exit_status);
 }
