@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:48:02 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 12:23:26 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/31 12:06:14 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_cmd	*get_cmd_info(t_token **head, t_shell_data *data)
 		ft_free_lst(head);
 		return (ft_putstr_fd("get_cmd_list() fail\n", 2), NULL);
 	}
-	return (head_cmd);
+	return (ft_free_lst(head), head_cmd);
 }
 
 void	syntax_error(const char *token_value)

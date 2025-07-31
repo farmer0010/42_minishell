@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:37:01 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 13:59:28 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/31 12:37:04 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, int *argv_len)
 		if (is_redirect(cur->type))
 		{
 			if (set_fd(cur, cmd) < 0)
-				return (invalid_fd(cmd->infile, cmd->outfile), ERR);
+				return (ERR);
 			cur = cur->next->next;
 			continue ;
 		}
@@ -84,20 +84,42 @@ int	set_argv_val(t_cmd *cmd, t_token *cur, int idx, t_shell_data *data)
 	return (1);
 }
 
+static void	check_filepath_infile_fd(t_cmd *cmd)
+{
+	if (cmd->filepath != NULL)
+	{
+		unlink(cmd->filepath);
+		free(cmd->filepath);
+		cmd->filepath = NULL;
+	}
+	if (cmd->infile > 2)
+		close(cmd->infile);
+}
+
 int	set_fd(t_token *cur, t_cmd *cmd)
 {
 	if (!cur || !cmd)
 		return (-1);
-	if (cur->type == REDIRECT_IN)
-		cmd->infile = open(cur->next->val, O_RDONLY);
-	else if (cur->type == HERE_DOC)
-		cmd->infile = here_doc(cur->next->val, &cmd->filepath);
-	else if (cur->type == REDIRECT_OUT)
-		cmd->outfile = open(cur->next->val, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else if (cur->type == REDIRECT_APPEND)
-		cmd->outfile = open(cur->next->val, O_CREAT | O_WRONLY | \
-			O_APPEND, 0644);
+	if (cur->type == REDIRECT_IN || cur->type == HERE_DOC)
+	{
+		check_filepath_infile_fd(cmd);
+		if (cur->type == REDIRECT_IN)
+			cmd->infile = open(cur->next->val, O_RDONLY);
+		else if (cur->type == HERE_DOC)
+			cmd->infile = here_doc(cur->next->val, &cmd->filepath);
+	}
+	else if (cur->type == REDIRECT_OUT || cur->type == REDIRECT_APPEND)
+	{
+		if (cmd->outfile > 2)
+			close(cmd->outfile);
+		if (cur->type == REDIRECT_OUT)
+			cmd->outfile = open(cur->next->val, O_CREAT | O_WRONLY | O_TRUNC, \
+				0644);
+		else if (cur->type == REDIRECT_APPEND)
+			cmd->outfile = open(cur->next->val, O_CREAT | O_WRONLY | \
+				O_APPEND, 0644);
+	}
 	if (cmd->infile < 0 || cmd->outfile < 0)
-		return (-1);
+		return (invalid_fd(cmd), -1);
 	return (1);
 }

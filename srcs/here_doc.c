@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 13:59:16 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/31 11:09:25 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	write_newline_fd(char *line, int fd)
 int	here_doc(char *end, char **filepath)
 {
 	int		fd_write;
-	int		fd_read;
 	char	*line;
 
 	*filepath = open_here_doc_file(&fd_write);
@@ -67,6 +66,5 @@ int	here_doc(char *end, char **filepath)
 		free(line);
 	}
 	close(fd_write);
-	fd_read = open(*filepath, O_RDONLY);
-	return (fd_read);
+	return (open(*filepath, O_RDONLY));
 }

@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:19:25 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/29 13:49:28 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/07/31 11:32:44 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,17 @@ void	ft_free_lst(t_token **head)
 	*head = NULL;
 }
 
-void	invalid_fd(int infile_fd, int outfile_fd)
+void	invalid_fd(t_cmd *cmd)
 {
-	if (infile_fd > 2 && infile_fd != -1)
-		close(infile_fd);
-	if (outfile_fd > 2 && outfile_fd != -1)
-		close(outfile_fd);
-	ft_putstr_fd("get_argv_set_fd()/open file failed\n", 2);
+	if (cmd->filepath != NULL)
+	{
+		unlink(cmd->filepath);
+		free(cmd->filepath);
+		cmd->filepath = NULL;
+	}
+	if (cmd->infile > 2)
+		close(cmd->infile);
+	if (cmd->outfile > 2)
+		close(cmd->outfile);
+	ft_putstr_fd("in redirect token, open() is failed\n", 2);
 }
