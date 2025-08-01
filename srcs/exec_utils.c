@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juyoukim <juyoukim@student.42gyeongsa      +#+  +:+       +#+        */
+/*   By: juyoukim <juyoukim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 12:04:06 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/08/01 12:04:07 by juyoukim         ###   ########.fr       */
+/*   Updated: 2025/08/01 12:30:00 by juyoukim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_error_and_exit(char *cmd, char *msg, int exit_code, t_shell_data *data)
+static void	print_error_and_exit(\
+	char *cmd, char *msg, int exit_code, t_shell_data *data)
 {
 	write(2, "minishell: ", 11);
 	write(2, cmd, ft_strlen(cmd));
@@ -23,11 +24,14 @@ static void	print_error_and_exit(char *cmd, char *msg, int exit_code, t_shell_da
 
 static char	*handle_direct_path(char *cmd_path, t_shell_data *data)
 {
+	char	*exec_path;
+
 	if (access(cmd_path, F_OK) == -1)
-		print_error_and_exit(cmd_path, ": No such file or directory\n", 127, data);
+		print_error_and_exit(cmd_path, \
+			": No such file or directory\n", 127, data);
 	if (access(cmd_path, X_OK) == -1)
 		print_error_and_exit(cmd_path, ": Permission denied\n", 126, data);
-	char *exec_path = ft_strdup(cmd_path);
+	exec_path = ft_strdup(cmd_path);
 	if (!exec_path)
 	{
 		perror("minishell: malloc failed");
@@ -47,7 +51,8 @@ char	*get_exec_path(t_cmd *cmd, t_shell_data *data)
 	{
 		exec_path = find_executable(cmd->argv[0], data->env_list);
 		if (!exec_path)
-			print_error_and_exit(cmd->argv[0], ": command not found\n", 127, data);
+			print_error_and_exit(cmd->argv[0], \
+				": command not found\n", 127, data);
 	}
 	return (exec_path);
 }
@@ -77,4 +82,3 @@ void	handle_execve(char *path, char **argv, t_shell_data *data)
 	free_all(data);
 	exit(g_exit_status);
 }
-

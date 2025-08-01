@@ -26,7 +26,8 @@ t_cmd	*get_cmd_info(t_token **head, t_shell_data *data)
 	if (!head_cmd)
 	{
 		ft_free_lst(head);
-		return (ft_putstr_fd("get_cmd_list() fail\n", 2), NULL);
+		return (ft_putstr_fd("get_cmd_list() fail\n", 2),
+			g_exit_status = 1, NULL);
 	}
 	return (ft_free_lst(head), head_cmd);
 }

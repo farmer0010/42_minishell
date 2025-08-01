@@ -79,7 +79,8 @@ int	set_argv_val(t_cmd *cmd, t_token *cur, int idx, t_shell_data *data)
 	if (!cmd->argv[idx])
 	{
 		free_cmd_node(cmd);
-		return (perror("malloc failed in set_argv_val()\n"), -1);
+		return (perror("malloc failed in set_argv_val()\n"),
+			g_exit_status = 1, -1);
 	}
 	return (1);
 }

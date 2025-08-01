@@ -106,7 +106,8 @@ int	create_append_cmd(t_cmd **head, t_token *start, t_token *end, \
 		return (-1);
 	new_cmd = create_cmd_node(start, end, data);
 	if (!new_cmd)
-		return (perror("malloc failed in create_append_cmd()\n"), -1);
+		return (perror("malloc failed in create_append_cmd()\n"),
+			g_exit_status = 1, -1);
 	if (append_cmd(head, new_cmd) < 0)
 	{
 		free_cmd_node(new_cmd);
