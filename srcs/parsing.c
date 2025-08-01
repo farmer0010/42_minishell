@@ -36,6 +36,7 @@ void	syntax_error(const char *token_value)
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd((char *)token_value, 2);
 	ft_putstr_fd("'\n", 2);
+	g_exit_status = 2;
 }
 
 char	*get_env_name_len(const char *val, int *env_len)

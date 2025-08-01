@@ -212,8 +212,13 @@ void		setup_pipes(int idx, int count, int **pipefd);
 void		close_unused_pipes(int **pipefd, int count);
 void		close_all_pipe_fds_in_child(int **pipefd, int count);
 
+/* exec_utils.c */
+char		*get_exec_path(t_cmd *cmd, t_shell_data *data);
+void		handle_execve(char *path, char **argv, t_shell_data *data);
+
 /* process_child.c */
 void		child_process(t_cmd *cmd, t_shell_data *data);
+void		exec_command(t_cmd *cmd, t_shell_data *data);
 
 /* process_manager.c */
 void		run_child_processes(t_cmd *cmd_list, t_shell_data *data);

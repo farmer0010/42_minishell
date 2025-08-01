@@ -120,6 +120,6 @@ int	set_fd(t_token *cur, t_cmd *cmd)
 				O_APPEND, 0644);
 	}
 	if (cmd->infile < 0 || cmd->outfile < 0)
-		return (invalid_fd(cmd), -1);
+		return (invalid_fd(cmd), g_exit_status = 1, -1);
 	return (1);
 }

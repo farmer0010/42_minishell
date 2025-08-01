@@ -24,49 +24,12 @@ static void	setup_child_pipes(t_shell_data *data)
 		data->pipe_data.count, data->pipe_data.pipefd);
 }
 
-static char	**prepare_exec_data(t_cmd *cmd,
-	t_shell_data *data, char **exec_path)
+void	exec_command(t_cmd *cmd, t_shell_data *data)
 {
-	char	**env_array;
+	char	*path;
 
-	*exec_path = find_executable(cmd->argv[0], data->env_list);
-	if (!*exec_path)
-		return (NULL);
-	env_array = convert_env_list_to_array(data->env_list);
-	if (!env_array)
-	{
-		free(*exec_path);
-		return (NULL);
-	}
-	return (env_array);
-}
-
-static void	exec_command(t_cmd *cmd, t_shell_data *data)
-{
-	char	*exec_path;
-	char	**env_array;
-
-	env_array = prepare_exec_data(cmd, data, &exec_path);
-	if (!env_array)
-	{
-		if (!exec_path)
-		{
-			write(2, "minishell: command not found: ", 30);
-			write(2, cmd->argv[0], ft_strlen(cmd->argv[0]));
-			write(2, "\n", 1);
-			free_all(data);
-			exit(127);
-		}
-		perror("minishell: failed to convert env list to array");
-		free_all(data);
-		exit(EXIT_FAILURE);
-	}
-	execve(exec_path, cmd->argv, env_array);
-	perror("minishell: execve failed");
-	free(exec_path);
-	free_env_array(env_array);
-	free_all(data);
-	exit(EXIT_FAILURE);
+	path = get_exec_path(cmd, data);
+	handle_execve(path, cmd->argv, data);
 }
 
 void	child_process(t_cmd *cmd, t_shell_data *data)
