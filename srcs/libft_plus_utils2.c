@@ -12,27 +12,28 @@
 
 #include "minishell.h"
 
-int	ft_isspace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\f' || c == '\r');
-}
-
 static int	parse_sign_and_skip(const char **str)
 {
+	int	sign;
+	int	signcnt;
+
+	sign = 1;
+	signcnt = 0;
 	while (ft_isspace(**str))
 		(*str)++;
-	if (**str == '+')
+	while (**str == 43 || **str == 45)
 	{
+		if (**str == '-')
+			sign *= -1;
+		signcnt++;
 		(*str)++;
-		return (1);
 	}
-	if (**str == '-')
+	if (signcnt > 1)
 	{
-		(*str)++;
-		return (-1);
+		errno = EINVAL;
+		return (0);
 	}
-	return (1);
+	return (sign);
 }
 
 static int	is_overflow(long long res, int digit, int sign)
@@ -62,27 +63,41 @@ static long long	handle_overflow(int sign)
 	return (LLONG_MIN);
 }
 
-long long	ft_atoll(const char *str)
+static long long	parse_and_check_digits(const char **str, int sign)
 {
 	long long	res;
-	int			sign;
 	int			digit;
 
 	res = 0;
-	sign = parse_sign_and_skip(&str);
-	if (!ft_isdigit(*str))
-		return (0);
-	while (ft_isdigit(*str))
+	while (ft_isdigit(**str))
 	{
-		digit = *str - '0';
+		digit = **str - '0';
 		if (is_overflow(res, digit, sign))
 		{
 			errno = ERANGE;
 			return (handle_overflow(sign));
 		}
 		res = res * 10 + digit;
-		str++;
+		(*str)++;
 	}
+	return (res);
+}
+
+long long	ft_atoll(const char *str)
+{
+	long long	res;
+	int			sign;
+
+	errno = 0;
+	sign = parse_sign_and_skip(&str);
+	if (errno == EINVAL)
+		return (0);
+	if (!ft_isdigit(*str))
+	{
+		errno = EINVAL;
+		return (0);
+	}
+	res = parse_and_check_digits(&str, sign);
 	if (*str != '\0')
 	{
 		errno = EINVAL;

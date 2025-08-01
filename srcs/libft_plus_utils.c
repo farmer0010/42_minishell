@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+int	ft_isspace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
+}
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;

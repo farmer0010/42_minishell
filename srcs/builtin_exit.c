@@ -40,7 +40,11 @@ int	builtin_exit(char **argv, t_shell_data *data)
 		if (errno == ERANGE || errno == EINVAL)
 			exit_numeric_error(argv[1], data);
 		if (argv[2])
-			return (exit_too_many_args());
+		{
+			exit_too_many_args();
+			free_all(data);
+			exit(1);
+		}
 		exit_code = (exit_code % 256 + 256) % 256;
 	}
 	else
