@@ -24,18 +24,34 @@ static int	is_valid_n_option(const char *arg)
 	return (arg[i] == '\0');
 }
 
+static int	parse_n_option(char **argv, int *i)
+{
+	int	newline_flag;
+
+	newline_flag = TRUE;
+	while (argv[*i])
+	{
+		if (ft_strcmp(argv[*i], "--") == 0)
+		{
+			(*i)++;
+			break;
+		}
+		if (is_valid_n_option(argv[*i]))
+			newline_flag = FALSE;
+		else
+			break;
+		(*i)++;
+	}
+	return (newline_flag);
+}
+
 int	builtin_echo(char **argv)
 {
 	int	i;
 	int	newline_flag;
 
 	i = 1;
-	newline_flag = TRUE;
-	while (argv[i] && is_valid_n_option(argv[i]))
-	{
-		newline_flag = FALSE;
-		i++;
-	}
+	newline_flag = parse_n_option(argv, &i);
 	while (argv[i])
 	{
 		printf("%s", argv[i]);
