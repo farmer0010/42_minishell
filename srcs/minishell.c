@@ -22,8 +22,8 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (!init_shell_data(&data, envp))
 	{
-		print_init_error();
-		return (EXIT_FAILURE);
+		g_exit_status = EXIT_FAILURE;
+		return (g_exit_status);
 	}
 	start_minishell(&data);
 	free_all(&data);
