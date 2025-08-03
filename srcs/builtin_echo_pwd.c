@@ -34,12 +34,12 @@ static int	parse_n_option(char **argv, int *i)
 		if (ft_strcmp(argv[*i], "--") == 0)
 		{
 			(*i)++;
-			break;
+			break ;
 		}
 		if (is_valid_n_option(argv[*i]))
 			newline_flag = FALSE;
 		else
-			break;
+			break ;
 		(*i)++;
 	}
 	return (newline_flag);
