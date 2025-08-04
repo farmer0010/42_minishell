@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/04 14:47:37 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:15:45 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	here_doc(char *end, char **filepath)
 			*filepath = NULL;
 			close(fd_write);
 			signal(SIGINT, sigint_handler);
-			return (-1); // heredoc 실패로 종료
+			return (-1);
 		}
 		if (!line)
 		{
