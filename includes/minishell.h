@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/31 11:49:29 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:28:35 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,8 @@ void		free_all(t_shell_data *data);
 void		init_signal(void);
 void		sigint_handler(int signo);
 void		sigquit_handler(int signo);
+void		heredoc_sigint_handler(int signo);
+int			null_event_hook(void);
 
 /* builtin.c */
 int			is_builtin(char *cmd);
