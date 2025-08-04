@@ -39,10 +39,7 @@ void	child_process(t_cmd *cmd, t_shell_data *data)
 	close_all_pipe_fds_in_child(data->pipe_data.pipefd,
 		data->pipe_data.count - 1);
 	if (handle_redirects(cmd))
-	{
-		free_all(data);
 		exit(EXIT_FAILURE);
-	}
 	if (is_builtin(cmd->argv[0]))
 	{
 		g_exit_status = exec_builtin(cmd, data);

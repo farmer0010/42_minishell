@@ -51,7 +51,7 @@ char	*get_exec_path(t_cmd *cmd, t_shell_data *data)
 	{
 		exec_path = find_executable(cmd->argv[0], data->env_list);
 		if (!exec_path)
-			print_error_and_exit(cmd->argv[0], \
+			print_error_and_exit(cmd->argv[0],
 				": command not found\n", 127, data);
 	}
 	return (exec_path);
