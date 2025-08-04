@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:25:45 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/04 15:50:09 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:57:48 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av, char **envp)
 		return (g_exit_status);
 	}
 	start_minishell(&data);
-	free_all(&data);
 	rl_event_hook = NULL;
+	free_all(&data);
 	return (g_exit_status);
 }
