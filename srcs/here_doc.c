@@ -6,13 +6,15 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/31 11:09:25 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:47:37 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	here_doc(char *end, char **filepath);
+static void	write_newline_fd(char *line, int fd);
+static char	*open_here_doc_file(int *fd);
+int			here_doc(char *end, char **filepath);
 
 static char	*open_here_doc_file(int *fd)
 {
@@ -49,13 +51,34 @@ int	here_doc(char *end, char **filepath)
 	char	*line;
 
 	*filepath = open_here_doc_file(&fd_write);
-	if (!*filepath)
+	if (!*filepath || fd_write < 0)
 		return (ft_putstr_fd("open() fail\n", 2), -1);
+	signal(SIGINT, heredoc_sigint_handler);
 	while (1)
 	{
 		line = readline("> ");
+		if (g_exit_status == 130)
+		{
+			unlink(*filepath);
+			free(*filepath);
+			*filepath = NULL;
+			close(fd_write);
+			signal(SIGINT, sigint_handler);
+			return (-1); // heredoc 실패로 종료
+		}
 		if (!line)
+		{
+			if (g_exit_status == 130)
+			{
+				unlink(*filepath);
+				free(*filepath);
+				*filepath = NULL;
+				close(fd_write);
+				signal(SIGINT, sigint_handler);
+				return (-1);
+			}
 			break ;
+		}
 		if (ft_strncmp(line, end, ft_strlen(end)) == 0 && \
 				ft_strlen(line) == ft_strlen(end))
 		{
@@ -66,5 +89,6 @@ int	here_doc(char *end, char **filepath)
 		free(line);
 	}
 	close(fd_write);
+	signal(SIGINT, sigint_handler);
 	return (open(*filepath, O_RDONLY));
 }
