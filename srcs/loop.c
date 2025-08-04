@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:09:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/31 12:43:45 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:50:28 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	start_minishell(t_shell_data *data)
 {
 	char	*input;
 
+	rl_event_hook = null_event_hook;
 	while (TRUE)
 	{
 		init_signal();
