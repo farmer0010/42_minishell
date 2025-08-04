@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 14:03:29 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:56:37 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,11 @@ int	create_append_cmd(t_cmd **head, t_token *start, t_token *end, \
 		return (-1);
 	new_cmd = create_cmd_node(start, end, data);
 	if (!new_cmd)
-		return (perror("malloc failed in create_append_cmd()\n"),
-			g_exit_status = 1, -1);
+	{
+		if (g_exit_status != 130)
+			g_exit_status = 1;
+		return (perror("malloc failed in create_append_cmd()\n"), -1);
+	}
 	if (append_cmd(head, new_cmd) < 0)
 	{
 		free_cmd_node(new_cmd);

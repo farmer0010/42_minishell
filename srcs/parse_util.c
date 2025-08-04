@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:37:01 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/31 12:37:04 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:50:46 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,11 @@ int	set_fd(t_token *cur, t_cmd *cmd)
 				O_APPEND, 0644);
 	}
 	if (cmd->infile < 0 || cmd->outfile < 0)
-		return (invalid_fd(cmd), g_exit_status = 1, -1);
+	{
+		invalid_fd(cmd);
+		if (g_exit_status != 130)
+			g_exit_status = 1;
+		return (-1);
+	}
 	return (1);
 }
