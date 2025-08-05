@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:26:31 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/05 13:03:25 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:00:45 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ t_cmd	*create_cmd_node(t_token *start, t_token *end, t_shell_data *data)
 		}
 		if (set_argv_val(cmd, cur, &i, data) < 0)
 			return (free_cmd_node(cmd), NULL);
-		i++;
 		cur = cur->next;
 	}
 	return (cmd);

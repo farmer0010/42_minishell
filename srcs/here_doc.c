@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:31:19 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/04 15:15:45 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:18:22 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,24 @@ static char	*open_here_doc_file(int *fd)
 	return (filename);
 }
 
+void	sigint_return(char **filepath, int fd_write)
+{
+	unlink(*filepath);
+	free(*filepath);
+	*filepath = NULL;
+	close(fd_write);
+	signal(SIGINT, sigint_handler);
+}
+
+int	check_heredoc_del(char *line, char *end)
+{
+	if (ft_strncmp(line, end, ft_strlen(end)) == 0 && \
+				ft_strlen(line) == ft_strlen(end))
+		return (1);
+	else
+		return (0);
+}
+
 static void	write_newline_fd(char *line, int fd)
 {
 	ft_putstr_fd(line, fd);
@@ -58,29 +76,10 @@ int	here_doc(char *end, char **filepath)
 	{
 		line = readline("> ");
 		if (g_exit_status == 130)
-		{
-			unlink(*filepath);
-			free(*filepath);
-			*filepath = NULL;
-			close(fd_write);
-			signal(SIGINT, sigint_handler);
-			return (-1);
-		}
+			return (sigint_return(filepath, fd_write), -1);
 		if (!line)
-		{
-			if (g_exit_status == 130)
-			{
-				unlink(*filepath);
-				free(*filepath);
-				*filepath = NULL;
-				close(fd_write);
-				signal(SIGINT, sigint_handler);
-				return (-1);
-			}
 			break ;
-		}
-		if (ft_strncmp(line, end, ft_strlen(end)) == 0 && \
-				ft_strlen(line) == ft_strlen(end))
+		if (check_heredoc_del(line, end) == 1)
 		{
 			free(line);
 			break ;
