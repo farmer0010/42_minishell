@@ -34,6 +34,8 @@ void	exec_command(t_cmd *cmd, t_shell_data *data)
 
 void	child_process(t_cmd *cmd, t_shell_data *data)
 {
+	if (cmd -> redirect_error)
+		exit(1);
 	setup_child_signals();
 	setup_child_pipes(data);
 	close_all_pipe_fds_in_child(data->pipe_data.pipefd,

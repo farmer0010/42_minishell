@@ -93,7 +93,17 @@ static int	change_directory(char *target_path, t_shell_data *data)
 int	builtin_cd(char **argv, t_shell_data *data)
 {
 	char	*target_path;
+	int		i;
 
+	i = 0;
+	while (argv[i])
+		i++;
+	if (i > 2)
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		g_exit_status = 1;
+		return (1);
+	}
 	if (get_oldpwd(data))
 		return (1);
 	target_path = get_target_path(argv, data);
