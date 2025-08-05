@@ -50,6 +50,7 @@ typedef struct s_cmd
 	char			*filepath;
 	int				infile;
 	int				outfile;
+	int				redirect_error;
 	struct s_cmd	*next;
 }	t_cmd;
 
