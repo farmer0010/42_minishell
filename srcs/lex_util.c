@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:54:14 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 12:25:30 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 12:17:30 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,16 @@ int	is_redirect(t_token_type type)
 		return (1);
 	else
 		return (0);
+}
+
+int	is_prev_space(const char *cmd, int idx)
+{
+	int	i;
+
+	i = idx - 1;
+	while (i >= 0 && ft_isspace(cmd[i]))
+		i--;
+	if (i < 0)
+		return (1);
+	return (0);
 }

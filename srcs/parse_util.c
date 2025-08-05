@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:37:01 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/04 15:14:27 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:41:03 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		valid_syntax(t_token **head);
 int		get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, \
 	int *argv_len);
-int		set_argv_val(t_cmd *cmd, t_token *cur, int idx, t_shell_data *data);
+int		set_argv_val(t_cmd *cmd, t_token *cur, int *idx, t_shell_data *data);
 int		set_fd(t_token *cur, t_cmd *cmd);
 
 int	valid_syntax(t_token **head)
@@ -56,8 +56,7 @@ int	get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, int *argv_len)
 	{
 		if (is_redirect(cur->type))
 		{
-			if (set_fd(cur, cmd) < 0)
-				return (ERR);
+			set_fd(cur, cmd);
 			cur = cur->next->next;
 			continue ;
 		}
@@ -68,22 +67,52 @@ int	get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, int *argv_len)
 	return (1);
 }
 
-int	set_argv_val(t_cmd *cmd, t_token *cur, int idx, t_shell_data *data)
+int	set_argv_val(t_cmd *cmd, t_token *cur, int *idx, t_shell_data *data)
 {
+	char	*expanded;
+
 	if (!cmd || !cur)
 		return (-1);
+	if (cmd->redirect_error == 1)
+		return (1);
 	if (cur->quote_status == s_q)
-		cmd->argv[idx] = ft_strdup(cur->val);
+		expanded = ft_strdup(cur->val);
 	else
-		cmd->argv[idx] = expand_str(cur->val, data);
-	if (!cmd->argv[idx])
+		expanded = expand_str(cur->val, data);
+	if (!expanded)
 	{
 		free_cmd_node(cmd);
 		return (perror("malloc failed in set_argv_val()\n"),
 			g_exit_status = 1, -1);
 	}
+	if (*idx > 0 && cur->prev && cur->prev->type == WORD && cur->no_space == 1)
+		cmd->argv[*idx - 1] = ft_strjoin_free(cmd->argv[*idx - 1], expanded);
+	else
+	{
+		cmd->argv[*idx] = expanded;
+		(*idx)++;
+	}
 	return (1);
 }
+
+// int	set_argv_val(t_cmd *cmd, t_token *cur, int idx, t_shell_data *data)
+// {
+// 	if (!cmd || !cur)
+// 		return (-1);
+// 	if (cmd->redirect_error == 1)
+// 		return (1);
+// 	if (cur->quote_status == s_q)
+// 		cmd->argv[idx] = ft_strdup(cur->val);
+// 	else
+// 		cmd->argv[idx] = expand_str(cur->val, data);
+// 	if (!cmd->argv[idx])
+// 	{
+// 		free_cmd_node(cmd);
+// 		return (perror("malloc failed in set_argv_val()\n"),
+// 			g_exit_status = 1, -1);
+// 	}
+// 	return (1);
+// }
 
 static void	check_filepath_infile_fd(t_cmd *cmd)
 {
@@ -121,11 +150,6 @@ int	set_fd(t_token *cur, t_cmd *cmd)
 				O_APPEND, 0644);
 	}
 	if (cmd->infile < 0 || cmd->outfile < 0)
-	{
-		invalid_fd(cmd);
-		if (g_exit_status != 130)
-			g_exit_status = 1;
-		return (-1);
-	}
+		case_invalid_fd(cmd, cur->next->val);
 	return (1);
 }

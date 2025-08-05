@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:19:25 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/31 11:32:44 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:13:10 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,24 @@ void	invalid_fd(t_cmd *cmd)
 		cmd->filepath = NULL;
 	}
 	if (cmd->infile > 2)
+	{
 		close(cmd->infile);
+		cmd->infile = 0;
+	}
 	if (cmd->outfile > 2)
+	{
 		close(cmd->outfile);
-	ft_putstr_fd("in redirect token, open() is failed\n", 2);
+		cmd->outfile = 1;
+	}
+	ft_putstr_fd("minishell: ", 2);
+}
+
+void	case_invalid_fd(t_cmd *cmd, char *filename)
+{
+	ft_putstr_fd("minishell: ", 2);
+	perror(filename);
+	invalid_fd(cmd);
+	cmd->redirect_error = 1;
+	if (g_exit_status != 130)
+		g_exit_status = 1;
 }

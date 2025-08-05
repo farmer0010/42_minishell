@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 11:09:28 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 14:01:36 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:22:51 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	print_token_lst(t_token *head)
 			printf("quote state : single quote\n");
 		else if (cur->quote_status == d_q)
 			printf("quote state : double quote\n");
+		printf("no_space : %d\n", cur->no_space);
 		printf("token value : %s\n", cur->val);
 		printf("---------------------------------------------------\n");
 		i++;

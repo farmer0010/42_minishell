@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/08/04 15:15:42 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:10:58 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_token
 	t_token_type	type;
 	t_quote_type	quote_status;
 	char			*val;
+	int				no_space;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -246,6 +247,7 @@ char		*process_expansion(const char *cur,
 int			ft_isquote(char c);
 int			ft_isoper(char c);
 int			is_redirect(t_token_type type);
+int			is_prev_space(const char *cmd, int idx);
 
 /* lexing_handler.c */
 int			handle_general(const char *cmd, int *i,
@@ -271,12 +273,13 @@ t_cmd		*get_last_cmd(t_cmd *head);
 /* parse_free_util.c */
 void		ft_free_lst(t_token **head);
 void		invalid_fd(t_cmd *cmd);
+void		case_invalid_fd(t_cmd *cmd, char *filename);
 
 /* parse_util.c */
 int			valid_syntax(t_token **head);
 int			get_argv_set_fd(t_cmd *cmd, t_token *start,
 				t_token *end, int *argv_len);
-int			set_argv_val(t_cmd *cmd, t_token *cur, int idx, \
+int			set_argv_val(t_cmd *cmd, t_token *cur, int *idx, \
 	t_shell_data *data);
 int			set_fd(t_token *cur, t_cmd *cmd);
 

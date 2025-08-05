@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:06:54 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/08/04 14:56:43 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 10:54:45 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,4 @@ void	heredoc_sigint_handler(int signo)
 int	null_event_hook(void)
 {
 	return (0);
-}
-
-int heredoc_event_hook(void)
-{
-	if (g_exit_status == 130)
-	{
-		rl_done = 1;
-		return (-1);
-	}
-	return 0;
 }

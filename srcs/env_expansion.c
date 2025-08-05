@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:30:46 by taewonki          #+#    #+#             */
-/*   Updated: 2025/07/30 12:21:02 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 11:42:28 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*end_expansion(char *expanded, char *cur);
 char	*append_pre_doller(char *expanded, const char *pos, const char *cur);
 char	*process_expansion(const char *cur, char *expanded, int *env_len, \
 	t_shell_data *data);
+char	*plus_doller_sign(char *expanded, int *env_len);
 
 char	*expand_str(const char *val, t_shell_data *data)
 {
@@ -43,6 +44,13 @@ char	*expand_str(const char *val, t_shell_data *data)
 		expanded = process_expansion(cur, expanded, &env_len, data);
 		cur += env_len;
 	}
+	return (expanded);
+}
+
+char	*plus_doller_sign(char *expanded, int *env_len)
+{
+	*env_len = 0;
+	expanded = ft_strjoin_free(expanded, ft_strdup("$"));
 	return (expanded);
 }
 
@@ -77,6 +85,8 @@ char	*process_expansion(const char *cur, char *expanded, int *env_len, \
 
 	if (!cur || !expanded)
 		return (NULL);
+	if (*cur == '\0' || !ft_isalpha(*cur))
+		return (plus_doller_sign(expanded, env_len));
 	env_name = get_env_name_len(cur, env_len);
 	if (!env_name)
 		return (free(expanded), NULL);

@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 16:14:19 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/24 14:41:58 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 13:09:50 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	{
 		result = ft_strdup(s2);
 		free(s2);
-		return (result);
+		return (s2 = NULL, result);
 	}
 	if (!s2)
 	{
 		result = ft_strdup(s1);
 		free(s1);
-		return (result);
+		return (s1 = NULL, result);
 	}
 	result = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!result)
@@ -73,5 +73,5 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	ft_strlcat(result, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
 	free(s1);
 	free(s2);
-	return (result);
+	return (s1 = NULL, s2 = NULL, result);
 }
