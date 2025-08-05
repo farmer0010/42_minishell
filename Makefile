@@ -10,86 +10,90 @@
 #                                                                              #
 # **************************************************************************** #
 
-# --- 프로젝트 이름 ---
-NAME = minishell
+NAME			=	minishell
+CC				=	cc
+CFLAGS			=	-Wall -Wextra -Werror -g
+RM				=	rm -f
 
-# --- 소스 파일 디렉토리 ---
-SRCS_DIR = srcs
+SRCS_DIR		=	srcs
+OBJS_DIR		=	objs
+INCLUDES_DIR	=	includes
+LIBFT_DIR		=	Libft
+LIBFT_A			=	$(LIBFT_DIR)/libft.a
 
-# --- 헤더 파일 디렉토리 ---
-INCLUDES_DIR = includes
+SRCS			=	srcs/builtin.c \
+					srcs/builtin_cd.c \
+					srcs/builtin_echo_pwd.c \
+					srcs/builtin_env.c \
+					srcs/builtin_exit.c \
+					srcs/builtin_export.c \
+					srcs/builtin_handler.c \
+					srcs/builtin_single.c \
+					srcs/builtin_unset.c \
+					srcs/builtin_validation.c \
+					srcs/cmd_list_func.c \
+					srcs/debug_parse.c \
+					srcs/env_convert.c \
+					srcs/env_expansion.c \
+					srcs/env_getters.c \
+					srcs/env_init.c \
+					srcs/env_set_unset.c \
+					srcs/env_utils.c \
+					srcs/execute_cmds.c \
+					srcs/execute_cmds_utils.c \
+					srcs/exec_utils.c \
+					srcs/free_cmd_utils.c \
+					srcs/free_utils.c \
+					srcs/here_doc.c \
+					srcs/init_data.c \
+					srcs/lexing.c \
+					srcs/lexing_handler.c \
+					srcs/lex_util.c \
+					srcs/libft_plus_utils.c \
+					srcs/libft_plus_utils2.c \
+					srcs/list_func.c \
+					srcs/loop.c \
+					srcs/loop_utils.c \
+					srcs/minishell.c \
+					srcs/multi_cmd_handler.c \
+					srcs/parse_free_util.c \
+					srcs/parse_util.c \
+					srcs/parsing.c \
+					srcs/pipe_utils.c \
+					srcs/process_child.c \
+					srcs/process_manager.c \
+					srcs/redirect.c \
+					srcs/signal.c \
+					srcs/signal_utils.c
 
-# --- Libft 디렉토리 ---
-LIBFT_DIR = Libft
-LIBFT_LIB = $(LIBFT_DIR)/libft.a
+OBJS			=	$(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
-# --- 소스 파일 목록 ---
-# srcs 디렉토리 내의 모든 .c 파일을 포함
-SRCS = $(wildcard $(SRCS_DIR)/*.c)
+INCLUDES		=	-I$(INCLUDES_DIR) -I$(LIBFT_DIR)
+LDFLAGS			=	-lreadline
+LDLIBS			=	-L$(LIBFT_DIR) -lft
 
-# --- 오브젝트 파일 디렉토리 ---
-OBJS_DIR = objs
+all:			$(NAME)
 
-# --- 오브젝트 파일 목록 ---
-# 소스 파일을 objs 디렉토리 내의 .o 파일로 변환
-OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
+$(NAME):		$(OBJS_DIR) $(OBJS) $(LIBFT_A)
+				$(CC) $(CFLAGS) $(OBJS) $(LDLIBS) $(LDFLAGS) -o $(NAME)
 
-# --- 컴파일러 및 플래그 ---
-CC = gcc
-# CFLAGS에서 -I와 $(LIBFT_DIR) 사이에 공백 추가
-CFLAGS = -Wall -Wextra -Werror -g -I$(LIBFT_DIR) # 디버깅 정보를 포함 (-g)
+$(LIBFT_A):
+				@make -s -C $(LIBFT_DIR) bonus
 
-# --- 링커 플래그 ---
-# Linux에서는 일반적으로 -lreadline만으로 충분합니다.
-LDFLAGS = -lreadline -L$(LIBFT_DIR) -lft
-
-# --- 색상 코드 (선택 사항) ---
-GREEN = \033[0;32m
-RED = \033[0;31m
-NC = \033[0m
-
-# --- 모든 타겟 ---
-.PHONY: all clean fclean re libft
-
-all: libft $(NAME)
-
-# Libft를 먼저 빌드하는 타겟
-libft:
-	@echo "$(GREEN)Building Libft...$(NC)"
-	@make -C $(LIBFT_DIR) bonus
-	@echo "$(GREEN)Libft built successfully!$(NC)"
-
-# 메인 실행 파일 빌드
-$(NAME): $(OBJS_DIR) $(OBJS) $(LIBFT_LIB)
-	@echo "$(GREEN)Linking $(NAME)...$(NC)"
-	@$(CC) $(OBJS) $(LIBFT_LIB) $(LDFLAGS) -o $(NAME)
-	@echo "$(GREEN)$(NAME) compiled successfully!$(NC)"
-
-# 오브젝트 파일 디렉토리가 없으면 생성
 $(OBJS_DIR):
-	@mkdir -p $(OBJS_DIR)
+				@mkdir -p $(OBJS_DIR)
 
-# .c 파일을 .o 파일로 컴파일하는 규칙
-# CFLAGS에 이미 -I$(LIBFT_DIR)가 포함되었으므로 여기서는 중복 제거
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
-	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -I$(INCLUDES_DIR) -c $< -o $@
+				$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# 모든 오브젝트 파일 및 Libft 오브젝트 파일 제거
 clean:
-	@echo "$(RED)Cleaning object files...$(NC)"
-	@rm -rf $(OBJS_DIR)
-	@make -C $(LIBFT_DIR) clean
+				@make -s -C $(LIBFT_DIR) clean
+				@$(RM) -r $(OBJS_DIR)
 
-# 모든 빌드 결과물 (실행 파일 및 라이브러리) 제거
-fclean: clean
-	@echo "$(RED)Cleaning $(NAME) and Libft library...$(NC)"
-	@rm -f $(NAME)
-	@make -C $(LIBFT_DIR) fclean
+fclean:			clean
+				@make -s -C $(LIBFT_DIR) fclean
+				@$(RM) $(NAME)
 
-# 전부 새로 빌드 (fclean 후 all)
-re: fclean all
+re:				fclean all
 
-# make debug: -g 플래그만 추가하여 디버그 빌드를 위한 타겟
-debug: CFLAGS += -g
-debug: re
+.PHONY: all clean fclean re
