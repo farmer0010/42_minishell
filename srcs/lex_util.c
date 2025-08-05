@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:54:14 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/05 12:17:30 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 14:41:27 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	is_prev_space(const char *cmd, int idx)
 	i = idx - 1;
 	while (i >= 0 && ft_isspace(cmd[i]))
 		i--;
-	if (i < 0)
+	if (i < idx - 1)
 		return (1);
 	return (0);
 }
