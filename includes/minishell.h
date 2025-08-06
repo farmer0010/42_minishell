@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/08/05 13:10:58 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:43:05 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,7 @@ int			get_argv_set_fd(t_cmd *cmd, t_token *start,
 				t_token *end, int *argv_len);
 int			set_argv_val(t_cmd *cmd, t_token *cur, int *idx, \
 	t_shell_data *data);
-int			set_fd(t_token *cur, t_cmd *cmd);
+int			set_fd(t_token *cur, t_cmd *cmd, char *filename);
 
 /* parsing.c */
 void		syntax_error(const char *token_value);
