@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 14:13:13 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/07 12:04:52 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 12:59:04 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		handle_s_quote(const char *cmd, int *i, t_state *s, t_token **head);
 int		handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head);
 int		handle_in_word(const char *cmd, int *i, t_state *s, t_token **head);
 
-int handle_in_oper(const char *cmd, int *i, t_token **head)
+int	handle_in_oper(const char *cmd, int *i, t_token **head)
 {
 	if (ft_isoper(cmd[*i]) == PIPE)
 		return (handle_pipe_token(i, head));
@@ -64,7 +64,7 @@ int	handle_s_quote(const char *cmd, int *i, t_state *s, t_token **head)
 		*i = end_i + 1;
 		*s = s_in_general;
 		new_token = create_token(WORD, s_q, val);
-		if (token_error_handler(new_token, val, head) < 0)
+		if (token_error_handler(new_token, head) < 0)
 			return (-1);
 		last_token(*head)->no_space = no_space;
 		return (1);
@@ -92,7 +92,7 @@ int	handle_d_quote(const char *cmd, int *i, t_state *s, t_token **head)
 		*i = end_i + 1;
 		*s = s_in_general;
 		new_token = create_token(WORD, d_q, val);
-		if (token_error_handler(new_token, val, head) < 0)
+		if (token_error_handler(new_token, head) < 0)
 			return (-1);
 		last_token(*head)->no_space = no_space;
 		return (1);
@@ -119,7 +119,7 @@ int	handle_in_word(const char *cmd, int *i, t_state *s, t_token **head)
 	*i = end_i;
 	*s = s_in_general;
 	new_token = create_token(WORD, not_q, val);
-	if (token_error_handler(new_token, val, head) < 0)
+	if (token_error_handler(new_token, head) < 0)
 		return (-1);
 	last_token(*head)->no_space = no_space;
 	return (1);

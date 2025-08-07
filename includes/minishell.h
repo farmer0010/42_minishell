@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/08/07 12:03:40 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 12:57:51 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,8 +234,7 @@ int			append_cmd(t_cmd **head, t_cmd *cmd);
 int			create_append_cmd(t_cmd **head,
 				t_token *start, t_token *end, t_shell_data *data);
 t_cmd		*create_init_cmd(t_token *start, t_token *end);
-int			token_error_handler(t_token *new_token, \
-	char *val, t_token **head);
+int			token_error_handler(t_token *new_token, t_token **head);
 
 /* env_expansion.c */
 char		*expand_str(const char *val, t_shell_data *data);
@@ -295,13 +294,9 @@ t_cmd		*get_cmd_info(t_token **head, t_shell_data *data);
 //here_doc.c
 int			here_doc(char *end, char **filepath);
 
-//debug_parse.c
-void		print_token_lst(t_token *head);
-void		print_cmd_lst(t_cmd *head);
-
 //lex_handler_util.c
-int  handle_pipe_token(int *i, t_token **head);
-int  handle_redirect_in_token(const char *cmd, int *i, t_token **head);
-int  handle_redirect_out_token(const char *cmd, int *i, t_token **head);
+int			handle_pipe_token(int *i, t_token **head);
+int			handle_redirect_in_token(const char *cmd, int *i, t_token **head);
+int			handle_redirect_out_token(const char *cmd, int *i, t_token **head);
 
 #endif
