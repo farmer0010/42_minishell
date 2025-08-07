@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:54:14 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/07 11:28:07 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:42:44 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ char	*combine_filename_tokens(t_token **cur_ptr)
 	char	*temp;
 
 	cur = *cur_ptr;
-	filename = ft_strdup("");
+	filename = ft_strdup(cur->val);
 	if (!filename)
 		return (NULL);
+	cur = cur->next;
 	while (cur && cur->no_space == 1 && cur->type == WORD)
 	{
 		temp = ft_strdup(cur->val);
