@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 10:39:30 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/08/05 15:43:05 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 10:39:40 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ int			ft_isquote(char c);
 int			ft_isoper(char c);
 int			is_redirect(t_token_type type);
 int			is_prev_space(const char *cmd, int idx);
+char		*combine_filename_tokens(t_token **cur_ptr);
 
 /* lexing_handler.c */
 int			handle_general(const char *cmd, int *i,

@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 11:37:01 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/06 17:38:07 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 10:40:00 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,6 @@ int	valid_syntax(t_token **head)
 		cur = cur->next;
 	}
 	return (0);
-}
-
-char	*combine_filename_tokens(t_token **cur_ptr)
-{
-	t_token	*cur;
-	char	*filename;
-	char	*temp;
-
-	cur = *cur_ptr;
-	filename = ft_strdup("");
-	if (!filename)
-		return (NULL);
-	while (cur && cur->no_space == 1 && cur->type == WORD)
-	{
-		temp = ft_strdup(cur->val);
-		if (!temp)
-			return (free(filename), NULL);
-		filename = ft_strjoin_free(filename, temp);
-		if (!filename)
-			return (NULL);
-		cur = cur->next;
-	}
-	*cur_ptr = cur;
-	return (filename);
 }
 
 int	get_argv_set_fd(t_cmd *cmd, t_token *start, t_token *end, int *argv_len)
