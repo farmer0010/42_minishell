@@ -46,7 +46,7 @@ static void	wait_all_children(int count, pid_t last_pid)
 	}
 }
 
-static int	setup_pipes(t_shell_data *data, int num_cmds)
+static int	init_pipe_data(t_shell_data *data, int num_cmds)
 {
 	data->pipe_data.count = num_cmds;
 	data->pipe_data.idx = 0;
@@ -88,7 +88,7 @@ int	handle_multiple_cmds(t_shell_data *data, t_cmd *cmd_list)
 	pid_t	last_pid;
 
 	num_cmds = count_commands(cmd_list);
-	if (setup_pipes(data, num_cmds))
+	if (init_pipe_data(data, num_cmds))
 		return (g_exit_status);
 	last_pid = fork_commands(data, cmd_list);
 	if (last_pid == -1)
