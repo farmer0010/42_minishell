@@ -6,7 +6,7 @@
 #    By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/16 13:39:56 by taewonki          #+#    #+#              #
-#    Updated: 2025/07/30 12:39:51 by taewonki         ###   ########.fr        #
+#    Updated: 2025/08/07 12:05:51 by taewonki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ SRCS			=	srcs/builtin.c \
 					srcs/builtin_unset.c \
 					srcs/builtin_validation.c \
 					srcs/cmd_list_func.c \
-					srcs/debug_parse.c \
 					srcs/env_convert.c \
 					srcs/env_expansion.c \
 					srcs/env_getters.c \
@@ -64,7 +63,8 @@ SRCS			=	srcs/builtin.c \
 					srcs/process_manager.c \
 					srcs/redirect.c \
 					srcs/signal.c \
-					srcs/signal_utils.c
+					srcs/signal_utils.c \
+					srcs/lex_handler_util.c
 
 OBJS			=	$(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 

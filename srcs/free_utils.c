@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 10:56:32 by juyoukim          #+#    #+#             */
-/*   Updated: 2025/07/16 12:11:53 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 11:16:20 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,21 @@ void	free_all(t_shell_data *data)
 		return ;
 	free_resources(data);
 	close_backups(data);
+}
+
+int	token_error_handler(t_token *new_token, char *val, t_token **head)
+{
+	if (!new_token)
+	{
+		free(val);
+		ft_free_lst(head);
+		return (-1);
+	}
+	if (!append_token(head, new_token))
+	{
+		free_token_node(new_token);
+		ft_free_lst(head);
+		return (-1);
+	}
+	return (1);
 }

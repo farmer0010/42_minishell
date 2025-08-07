@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 14:30:46 by taewonki          #+#    #+#             */
-/*   Updated: 2025/08/05 15:30:05 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 11:37:23 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*expand_str(const char *val, t_shell_data *data)
 
 char	*plus_doller_sign(char *expanded, int *env_len)
 {
-	*env_len = 0;
+	*env_len = 1;
 	expanded = ft_strjoin_free(expanded, ft_strdup("$"));
 	return (expanded);
 }
@@ -85,23 +85,23 @@ char	*process_expansion(const char *cur, char *expanded, int *env_len, \
 
 	if (!cur || !expanded)
 		return (NULL);
+	if (*cur == '?')
+	{
+		*env_len = 1;
+		env_value = ft_itoa(g_exit_status);
+		expanded = ft_strjoin_free(expanded, env_value);
+		if (!expanded)
+			return (NULL);
+		return (expanded);
+	}
 	if (*cur == '\0' || !ft_isalpha(*cur))
 		return (plus_doller_sign(expanded, env_len));
 	env_name = get_env_name_len(cur, env_len);
 	if (!env_name)
 		return (free(expanded), NULL);
-	if (env_name[0] == '?')
-		env_value = ft_itoa(g_exit_status);
-	else
-		env_value = ft_strdup(get_env_value(data->env_list, env_name));
+	env_value = ft_strdup(get_env_value(data->env_list, env_name));
 	free(env_name);
 	if (env_value)
-	{
 		expanded = ft_strjoin_free(expanded, env_value);
-		if (!expanded)
-			return (NULL);
-	}
-	else
-		return (expanded);
 	return (expanded);
 }

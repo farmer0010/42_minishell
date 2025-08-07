@@ -6,7 +6,7 @@
 /*   By: taewonki <taewonki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 00:56:05 by gimtaewon         #+#    #+#             */
-/*   Updated: 2025/08/05 16:32:55 by taewonki         ###   ########.fr       */
+/*   Updated: 2025/08/07 12:21:48 by taewonki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,19 @@ t_token	*create_token(int type, t_quote_type q, char *val)
 		return (NULL);
 	token = malloc(sizeof(t_token));
 	if (!token)
+	{
+		free(val);
 		return (perror("fail malloc() token\n"), NULL);
+	}
 	token->type = type;
 	token->quote_status = q;
 	token->val = ft_strdup(val);
 	free(val);
+	if (!token->val)
+	{
+		free(token);
+		return (perror("fail ft_strdup() token->val\n"), NULL);
+	}
 	token->prev = NULL;
 	token->next = NULL;
 	return (token);
@@ -79,4 +87,13 @@ t_cmd	*get_last_cmd(t_cmd *head)
 	while (cur->next)
 		cur = cur->next;
 	return (cur);
+}
+
+void	free_token_node(t_token *new_token)
+{
+	if (!new_token)
+		return ;
+	if (new_token->val)
+		free(new_token->val);
+	free(new_token);
 }
